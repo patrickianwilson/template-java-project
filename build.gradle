@@ -13,5 +13,6 @@ buildscript {
 project.version = 'dev.1'
 project.group = "com.github.patrickianwilson"
 
-apply plugin: "project.java"
+apply plugin: "project.java-standalone"
 
+mainClassName="com.patrickwilsonconsulting.Runner"
