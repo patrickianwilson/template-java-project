@@ -1,1 +1,17 @@
-apply from: "$rootProject.projectDir/config/gradle/java/java-conventions.gradle"
+buildscript {
+    repositories {
+        maven {
+            url "http://repo.wilsonsinquest.com/nexus/content/repositories/releases/"
+        }
+        mavenCentral()
+    }
+    dependencies {
+        classpath "com.github.patrickianwilson:ProjectConventionsGradlePlugin:1.0.+"
+    }
+}
+
+project.version = 'dev.1'
+project.group = "com.github.patrickianwilson"
+
+apply plugin: "project.java"
+
