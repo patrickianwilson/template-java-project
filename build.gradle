@@ -24,4 +24,6 @@ if (System.getenv("BUILD_NUMBER") != null) {
 }
 
 apply plugin: "project.java"
+apply plugin: "project.java-standalone"
 
+mainClassName="com.patrickwilsonconsulting.Runner"
