@@ -1,2 +1,9 @@
 # template-java-project
-Some java project templates for quick starts.
+A quickstart template for writing Cardinal web services
+
+## To Build
+
+```
+gradlew release
+
+```

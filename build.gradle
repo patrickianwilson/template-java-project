@@ -6,6 +6,7 @@ buildscript {
         maven {
             url "https://plugins.gradle.org/m2/"
         }
+        mavenLocal()
         mavenCentral()
     }
     dependencies {
@@ -15,8 +16,32 @@ buildscript {
 }
 
 project.version = 'dev.1'
+
 project.group = "com.github.patrickianwilson"
 
-apply plugin: "project.java-standalone"
+apply plugin: "project.cardinal-service"
+
+project.ext {
+    dockerTag = "template-cardinal-service:latest"
+    dockerFile = "$projectDir/src/main/deploy/Dockerfile"
+    dockerImagePath="us.gcr.io/inlaid-citron-94802/services/template-cardinal-service:${version}"
+    serviceYamlFileTemplate="${projectDir}/src/main/deploy/Service.yaml"
+}
+apply plugin: "facet.docker"
 
 mainClassName="com.patrickwilsonconsulting.Runner"
+
+repositories {
+    maven{
+        url("http://repo.wilsonsinquest.com/nexus/content/repositories/ardm-dev-track")
+    }
+    maven {
+        url "http://repo.wilsonsinquest.com/nexus/content/repositories/releases/"
+    }
+    mavenCentral()
+}
+dependencies {
+    compile "com.wilsonsinquest.data:Datasource-GCP-Datastore:0.+"
+    compile "com.github.patrickianwilson:ServicePatterns:1.0.+"
+}
+
