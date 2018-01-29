@@ -31,7 +31,6 @@ project.ext {
     serviceYamlFileTemplate="${projectDir}/src/main/deploy/Service.yaml"
 }
 apply plugin: "facet.docker"
-apply plugin: "project.java-standalone"
 
 if (System.getenv("BUILD_NUMBER") != null) {
     def majorVersion = "1.0" //eventually override with a lookup
