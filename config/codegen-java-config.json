@@ -1,0 +1,6 @@
+{
+  "invokerPackage": "com.github.patrickianwilson.thirdparty.service",
+  "modelPackage":"com.github.patrickianwilson.thirdparty.service.model",
+  "apiPackage": "com.github.patrickianwilson.thirdparty.service.api",
+  "dateLibrary": "java8"
+}
