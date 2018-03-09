@@ -19,3 +19,4 @@ rm $MODULE_PATH/build.sbt
 rm $MODULE_PATH/gradlew*
 rm $MODULE_PATH/gradle.properties
 rm $MODULE_PATH/git_push.sh
+
