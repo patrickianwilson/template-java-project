@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export WS_URL=http://localhost:8001
+export WS_URL=http://localhost:8080
 
 export MODULE_PATH=`pwd`
 
@@ -12,3 +12,10 @@ fi
 
 java -jar ${MODULE_PATH}/build/tmp/codegen.jar generate -i ${WS_URL}/swagger.json -l java -o ${MODULE_PATH} -c ${MODULE_PATH}/config/codegen-java-config.json
 
+rm $MODULE_PATH/settings.gradle
+rm $MODULE_PATH/pom.xml
+rm $MODULE_PATH/.travis.yml
+rm $MODULE_PATH/build.sbt
+rm $MODULE_PATH/gradlew*
+rm $MODULE_PATH/gradle.properties
+rm $MODULE_PATH/git_push.sh
