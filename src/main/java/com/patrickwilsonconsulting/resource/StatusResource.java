@@ -1,4 +1,4 @@
-package com.patrickwilsonconsulting.controllers;
+package com.patrickwilsonconsulting.resource;
 
 import io.swagger.annotations.Api;
 
@@ -13,7 +13,7 @@ import javax.ws.rs.ext.Provider;
 @Path("/status")
 @Provider
 @Api
-public class StatusController {
+public class StatusResource {
 
     @GET
     public Response amIUp() {

@@ -1,4 +1,4 @@
-package com.patrickwilsonconsulting.controllers.exceptions;
+package com.patrickwilsonconsulting.resource.exceptions;
 
 import com.patrickwilsonconsulting.serializers.ApiObject;
 import lombok.Builder;

@@ -1,7 +1,7 @@
-package com.patrickwilsonconsulting.controllers.exceptions;
+package com.patrickwilsonconsulting.resource.exceptions;
 
 
-import com.patrickwilsonconsulting.service.exceptions.EntityAlreadyExistsException;
+import com.patrickwilsonconsulting.controllers.exceptions.EntityAlreadyExistsException;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;

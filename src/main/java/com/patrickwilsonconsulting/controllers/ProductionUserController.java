@@ -1,11 +1,11 @@
-package com.patrickwilsonconsulting.service;
+package com.patrickwilsonconsulting.controllers;
 
 import com.google.inject.Inject;
 import com.patrickwilsonconsulting.builders.UserBuilder;
-import com.patrickwilsonconsulting.controllers.model.User;
+import com.patrickwilsonconsulting.resource.model.User;
 import com.patrickwilsonconsulting.repositories.UserRepository;
 import com.patrickwilsonconsulting.repositories.model.UserEntity;
-import com.patrickwilsonconsulting.service.exceptions.EntityAlreadyExistsException;
+import com.patrickwilsonconsulting.controllers.exceptions.EntityAlreadyExistsException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -14,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @AllArgsConstructor(onConstructor = @__(@Inject))
-public class ProductionUserService implements UserService {
+public class ProductionUserController implements UserController {
 
     private UserRepository appRepo;
     private UserBuilder appBuilder;

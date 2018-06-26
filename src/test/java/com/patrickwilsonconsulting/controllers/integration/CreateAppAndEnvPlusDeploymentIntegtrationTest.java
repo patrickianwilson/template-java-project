@@ -1,13 +1,13 @@
-package com.patrickwilsonconsulting.service.integration;
+package com.patrickwilsonconsulting.controllers.integration;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.patrickwilsonconsulting.builders.UserBuilder;
-import com.patrickwilsonconsulting.controllers.UserController;
-import com.patrickwilsonconsulting.controllers.model.User;
+import com.patrickwilsonconsulting.resource.UserResource;
+import com.patrickwilsonconsulting.resource.model.User;
 import com.patrickwilsonconsulting.repositories.RepositoryModule;
 import com.patrickwilsonconsulting.repositories.UserRepository;
-import com.patrickwilsonconsulting.service.ServiceModule;
+import com.patrickwilsonconsulting.controllers.ControllerModule;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -28,15 +28,15 @@ import static org.hamcrest.CoreMatchers.is;
 public class CreateAppAndEnvPlusDeploymentIntegtrationTest {
 
     public static final String USER_NAME = "archer";
-    static UserController userController = null;
+    static UserResource userResource = null;
     static UserRepository appRepo;
     static UserBuilder appBuilder;
     static List<User> createdUsers = new ArrayList<>();
 
     @BeforeClass
     public static void setup() {
-        Injector context = Guice.createInjector(new TestServiceModule(), new RepositoryModule(), new ServiceModule());
-        userController = context.getInstance(UserController.class);
+        Injector context = Guice.createInjector(new TestServiceModule(), new RepositoryModule(), new ControllerModule());
+        userResource = context.getInstance(UserResource.class);
         appRepo = context.getInstance(UserRepository.class);
         appBuilder = context.getInstance(UserBuilder.class);
     }
@@ -63,7 +63,7 @@ public class CreateAppAndEnvPlusDeploymentIntegtrationTest {
         app.setUserId("sterlingarcher");
 
         createdUsers.add(app);
-        Response createAppResp = userController.createUser(app);
+        Response createAppResp = userResource.createUser(app);
         Assert.assertThat(createAppResp.getStatus(), is(201));
 
     }

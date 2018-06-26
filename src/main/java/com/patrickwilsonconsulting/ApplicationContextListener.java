@@ -2,10 +2,11 @@ package com.patrickwilsonconsulting;
 
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Module;
-import com.patrickwilsonconsulting.controllers.StatusController;
-import com.patrickwilsonconsulting.controllers.WebModule;
+import com.patrickwilsonconsulting.accessors.AccessorModule;
+import com.patrickwilsonconsulting.resource.StatusResource;
+import com.patrickwilsonconsulting.resource.WebModule;
 import com.patrickwilsonconsulting.repositories.RepositoryModule;
-import com.patrickwilsonconsulting.service.ServiceModule;
+import com.patrickwilsonconsulting.controllers.ControllerModule;
 import io.swagger.config.ScannerFactory;
 import io.swagger.jaxrs.config.BeanConfig;
 import io.swagger.jaxrs.config.ReflectiveJaxrsScanner;
@@ -25,8 +26,9 @@ public class ApplicationContextListener extends GuiceResteasyBootstrapServletCon
         context.setAttribute("resteasy.scan", "true");
         return ImmutableList.of(
                 new WebModule(),
-                new ServiceModule(),
-                new RepositoryModule()
+                new ControllerModule(),
+                new RepositoryModule(),
+                new AccessorModule()
         );
 
     }
@@ -40,14 +42,14 @@ public class ApplicationContextListener extends GuiceResteasyBootstrapServletCon
 
     private BeanConfig configureSwagger() {
         ReflectiveJaxrsScanner scanner = new ReflectiveJaxrsScanner();
-        scanner.setResourcePackage(StatusController.class.getPackage().getName());
+        scanner.setResourcePackage(StatusResource.class.getPackage().getName());
         ScannerFactory.setScanner(scanner);
 
         BeanConfig config = new BeanConfig();
         config.setBasePath("/");
 
         config.setTitle("Module Service API");
-        config.setResourcePackage(StatusController.class.getPackage().getName());
+        config.setResourcePackage(StatusResource.class.getPackage().getName());
         config.setScan(true);
 
         return config;

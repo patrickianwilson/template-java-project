@@ -1,9 +1,9 @@
-package com.patrickwilsonconsulting.controllers;
+package com.patrickwilsonconsulting.resource;
 
 import com.google.inject.servlet.ServletModule;
-import com.patrickwilsonconsulting.controllers.exceptions.EntityAlreadyExistsExceptionHandler;
-import com.patrickwilsonconsulting.controllers.exceptions.EntityNotFoundExceptionHandler;
-import com.patrickwilsonconsulting.controllers.exceptions.InvalidInputExceptionHandler;
+import com.patrickwilsonconsulting.resource.exceptions.EntityAlreadyExistsExceptionHandler;
+import com.patrickwilsonconsulting.resource.exceptions.EntityNotFoundExceptionHandler;
+import com.patrickwilsonconsulting.resource.exceptions.InvalidInputExceptionHandler;
 import com.patrickwilsonconsulting.filters.CorsFilter;
 import com.patrickwilsonconsulting.serializers.JsonStreamReaderWriter;
 import io.swagger.jaxrs.config.BeanConfig;
@@ -18,8 +18,8 @@ public class WebModule extends ServletModule {
     @Override
     public void configureServlets() {
 
-        bind(StatusController.class);
-        bind(UserController.class);
+        bind(StatusResource.class);
+        bind(UserResource.class);
         bind(JsonStreamReaderWriter.class);
         configureSwagger();
 

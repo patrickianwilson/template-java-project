@@ -1,6 +1,6 @@
-package com.patrickwilsonconsulting.controllers.exceptions;
+package com.patrickwilsonconsulting.resource.exceptions;
 
-import com.patrickwilsonconsulting.service.exceptions.InvalidInputException;
+import com.patrickwilsonconsulting.controllers.exceptions.InvalidInputException;
 
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;

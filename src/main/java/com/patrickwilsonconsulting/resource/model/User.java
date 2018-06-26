@@ -1,4 +1,4 @@
-package com.patrickwilsonconsulting.controllers.model;
+package com.patrickwilsonconsulting.resource.model;
 
 import com.patrickwilsonconsulting.serializers.ApiObject;
 import lombok.Data;

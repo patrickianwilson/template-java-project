@@ -1,4 +1,4 @@
-package com.patrickwilsonconsulting.service.exceptions;
+package com.patrickwilsonconsulting.controllers.exceptions;
 
 /**
  * Created by pwilson on 11/21/17.

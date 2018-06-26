@@ -1,4 +1,4 @@
-package com.patrickwilsonconsulting.service.exceptions;
+package com.patrickwilsonconsulting.controllers.exceptions;
 
 
 import com.patrickwilsonconsulting.serializers.ApiObject;

@@ -1,6 +1,6 @@
-package com.patrickwilsonconsulting.controllers.exceptions;
+package com.patrickwilsonconsulting.resource.exceptions;
 
-import com.patrickwilsonconsulting.service.exceptions.EntityNotFoundException;
+import com.patrickwilsonconsulting.controllers.exceptions.EntityNotFoundException;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;

@@ -3,7 +3,7 @@ package com.patrickwilsonconsulting.builders;
 import com.google.cloud.datastore.Key;
 import com.google.inject.Inject;
 import com.patrickwilson.lib.patterns.service.beans.BeanEntityBuilder;
-import com.patrickwilsonconsulting.controllers.model.User;
+import com.patrickwilsonconsulting.resource.model.User;
 import com.patrickwilsonconsulting.repositories.UserRepository;
 import com.patrickwilsonconsulting.repositories.model.KeyValuePair;
 import com.patrickwilsonconsulting.repositories.model.UserEntity;

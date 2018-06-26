@@ -1,4 +1,4 @@
-package com.patrickwilsonconsulting.service;
+package com.patrickwilsonconsulting.controllers;
 
 import com.google.inject.Binder;
 import com.google.inject.Module;
@@ -6,11 +6,11 @@ import com.google.inject.Module;
 /**
  * Created by pwilson on 11/4/17.
  */
-public class ServiceModule implements Module {
+public class ControllerModule implements Module {
 
     @Override
     public void configure(Binder binder) {
-        binder.bind(UserService.class).to(ProductionUserService.class);
+        binder.bind(UserController.class).to(ProductionUserController.class);
     }
 
 }

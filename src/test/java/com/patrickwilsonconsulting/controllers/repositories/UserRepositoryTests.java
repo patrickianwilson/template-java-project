@@ -1,4 +1,4 @@
-package com.patrickwilsonconsulting.service.repositories;
+package com.patrickwilsonconsulting.controllers.repositories;
 
 import com.google.cloud.datastore.DatastoreOptions;
 import com.google.common.collect.ImmutableMap;
@@ -8,7 +8,7 @@ import com.patrickwilson.ardm.datasource.api.DataSourceAdaptor;
 import com.patrickwilson.ardm.datasource.gcp.datastore.GCPDatastoreDatasourceAdaptor;
 import com.patrickwilson.ardm.proxy.RepositoryProvider;
 import com.patrickwilsonconsulting.builders.UserBuilder;
-import com.patrickwilsonconsulting.controllers.model.User;
+import com.patrickwilsonconsulting.resource.model.User;
 import com.patrickwilsonconsulting.repositories.UserRepository;
 import com.patrickwilsonconsulting.repositories.model.UserEntity;
 import org.junit.AfterClass;

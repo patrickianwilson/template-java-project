@@ -1,8 +1,8 @@
-package com.patrickwilsonconsulting.service;
+package com.patrickwilsonconsulting.controllers;
 
 import com.google.api.client.repackaged.com.google.common.base.Strings;
-import com.patrickwilsonconsulting.controllers.model.User;
-import com.patrickwilsonconsulting.service.exceptions.InvalidInputException;
+import com.patrickwilsonconsulting.resource.model.User;
+import com.patrickwilsonconsulting.controllers.exceptions.InvalidInputException;
 
 /**
  * Created by pwilson on 11/5/17.
