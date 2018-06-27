@@ -56,3 +56,15 @@ dependencies {
     compile "com.wilsonsinquest.data:Datasource-GCP-Datastore:0.+"
     compile "com.github.patrickianwilson:ServicePatterns:1.0.+"
 }
+
+task configureZip {
+    finalizedBy distZip
+    doLast {
+        distZip.archiveName = "${moduleName}.zip"
+        startScripts.applicationName = "${moduleName}"
+    }
+}
+
+
+release.dependsOn "configureZip"
+
