@@ -29,3 +29,14 @@ apply plugin: "project.java"
 apply plugin: "project.java-standalone"
 
 mainClassName="com.patrickwilsonconsulting.Runner"
+
+task configureZip {
+    finalizedBy distZip
+    doLast {
+        distZip.archiveName = "${moduleName}.zip"
+        startScripts.applicationName = "${moduleName}"
+    }
+}
+
+
+release.dependsOn "configureZip"
