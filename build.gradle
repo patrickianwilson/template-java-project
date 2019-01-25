@@ -21,8 +21,6 @@ ext {
 project.version = 'dev.1'
 project.group = "com.github.patrickianwilson"
 
-apply plugin: "project.java-standalone"
-apply plugin: "project.java-standalone"
 if (System.getenv("BUILD_NUMBER") != null) {
     def majorVersion = "1.0" //eventually override with a lookup
     def buildSetVersion = "0" //eventually look this up too.
