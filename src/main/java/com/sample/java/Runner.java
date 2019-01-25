@@ -1,4 +1,4 @@
-package com.patrickwilsonconsulting;
+package com.sample.java;
 
 /**
  * Created by pwilson on 11/2/17.
