@@ -42,5 +42,4 @@ task configureZip {
     }
 }
 
-
 release.dependsOn "configureZip"
