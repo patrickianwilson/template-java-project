@@ -1,4 +1,4 @@
-package com.patrickwilsonconsulting;
+package com.sample.java;
 
 import org.junit.Test;
 
