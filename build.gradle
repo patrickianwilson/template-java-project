@@ -14,24 +14,15 @@ buildscript {
     }
 }
 
-project.version = 'dev.1'
-if (System.getenv("BUILD_NUMBER") != null) {
-    def majorVersion = "1.0" //eventually override with a lookup
-    def buildSetVersion = "0" //eventually look this up too.
-    project.version = "${majorVersion}.${buildSetVersion}.${System.getenv("BUILD_NUMBER")}"
-}
-project.group = "com.github.patrickianwilson"
-
-apply plugin: "project.cardinal-service"
-
 ext {
-    moduleName = "template-infrastructure-template"  //changeme!
+    moduleName = "template-java-project" //change me!!
     dockerTag = "${project.moduleName.toLowerCase()}:latest"
     dockerFile = "$projectDir/src/main/deploy/Dockerfile"
     dockerImagePath="us.gcr.io/inlaid-citron-94802/services/${project.moduleName.toLowerCase()}:${project.version}"
 }
 
-apply plugin: "facet.docker"
+project.version = 'dev.1'
+project.group = "com.github.patrickianwilson"
 
 if (System.getenv("BUILD_NUMBER") != null) {
     def majorVersion = "1.0" //eventually override with a lookup
@@ -39,9 +30,20 @@ if (System.getenv("BUILD_NUMBER") != null) {
     project.version = "${majorVersion}.${buildSetVersion}.${System.getenv("BUILD_NUMBER")}"
 }
 
-apply plugin: "project.java"
+apply plugin: "project.cardinal-service"
+apply plugin: "facet.docker"
+mainClassName="com.sample.cardinal.Runner"
 
-mainClassName="com.patrickwilsonconsulting.Runner"
+task configureZip {
+    finalizedBy distZip
+    doLast {
+        distZip.archiveName = "${moduleName}.zip"
+        startScripts.applicationName = "${moduleName}"
+    }
+}
+
+release.dependsOn "configureZip"
+
 
 repositories {
     maven{
@@ -56,15 +58,6 @@ dependencies {
     compile "com.wilsonsinquest.data:Datasource-GCP-Datastore:0.+"
     compile "com.github.patrickianwilson:ServicePatterns:1.0.+"
 }
-
-task configureZip {
-    finalizedBy distZip
-    doLast {
-        distZip.archiveName = "${moduleName}.zip"
-        startScripts.applicationName = "${moduleName}"
-    }
-}
-
 
 release.dependsOn "configureZip"
 
