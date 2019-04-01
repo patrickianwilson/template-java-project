@@ -1,35 +1,38 @@
 buildscript {
     repositories {
         maven {
-            url "http://repo.wilsonsinquest.com/nexus/content/repositories/releases/"
+            url "http://repository.inquestdevops.com/repository/inquest-oss-releases/"
         }
         maven {
             url "https://plugins.gradle.org/m2/"
         }
         mavenCentral()
+        mavenLocal()
     }
     dependencies {
-        classpath "com.github.patrickianwilson:ProjectConventionsGradlePlugin:1.0.+"
+        classpath "com.inquestdevops:WarblerBuildGradlePlugin:1.0.+"
+        classpath "com.inquestdevops:WarblerPublishGradlePlugin:1.0.+"
         classpath "net.ltgt.gradle:gradle-apt-plugin:0.15"
     }
 }
 
-ext {
-    moduleName = "template-java-project" //change me!!
-}
 
 project.version = 'dev.1'
 project.group = "com.github.patrickianwilson"
 
 if (System.getenv("BUILD_NUMBER") != null) {
     def majorVersion = "1.0" //eventually override with a lookup
-    def buildSetVersion = "0" //eventually look this up too.
-    project.version = "${majorVersion}.${buildSetVersion}.${System.getenv("BUILD_NUMBER")}"
+    def buildStream = "0"
+    project.version = "${majorVersion}.${buildStream}.${System.getenv("BUILD_NUMBER")}"
 }
 
-apply plugin: "project.java"
-apply plugin: "project.java-standalone"
+ext {
+    moduleName = "template-javaproject-project" //change me!!
+}
 
+
+apply plugin: "project.java-standalone"
+apply plugin: "publish.maven"
 mainClassName="com.patrickwilsonconsulting.Runner"
 
 task configureZip {
