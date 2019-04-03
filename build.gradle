@@ -1,17 +1,30 @@
 buildscript {
     repositories {
         maven {
-            url "http://repo.wilsonsinquest.com/nexus/content/repositories/releases/"
+            url "http://repository.inquestdevops.com/repository/inquest-oss-releases/"
         }
         maven {
             url "https://plugins.gradle.org/m2/"
         }
         mavenCentral()
+        mavenLocal()
     }
     dependencies {
-        classpath "com.github.patrickianwilson:ProjectConventionsGradlePlugin:1.0.+"
+        classpath "com.inquestdevops:WarblerBuildGradlePlugin:1.0.+"
+        classpath "com.inquestdevops:WarblerPublishGradlePlugin:1.0.+"
+        classpath "com.inquestdevops:ProjectTemplatesGradlePlugin:1.0.+"
         classpath "net.ltgt.gradle:gradle-apt-plugin:0.15"
     }
+}
+
+
+project.version = 'dev.1'
+project.group = "com.github.patrickianwilson"
+
+if (System.getenv("BUILD_NUMBER") != null) {
+    def majorVersion = "1.0" //eventually override with a lookup
+    def buildStream = "0"
+    project.version = "${majorVersion}.${buildStream}.${System.getenv("BUILD_NUMBER")}"
 }
 
 ext {
@@ -21,17 +34,9 @@ ext {
     dockerImagePath="us.gcr.io/inlaid-citron-94802/services/${project.moduleName.toLowerCase()}:${project.version}"
 }
 
-project.version = 'dev.1'
-project.group = "com.github.patrickianwilson"
-
-if (System.getenv("BUILD_NUMBER") != null) {
-    def majorVersion = "1.0" //eventually override with a lookup
-    def buildSetVersion = "0" //eventually look this up too.
-    project.version = "${majorVersion}.${buildSetVersion}.${System.getenv("BUILD_NUMBER")}"
-}
-
 apply plugin: "project.cardinal-service"
-apply plugin: "facet.docker"
+apply plugin: "publish.docker"
+
 mainClassName="com.sample.cardinal.Runner"
 
 task configureZip {
@@ -46,16 +51,13 @@ release.dependsOn "configureZip"
 
 
 repositories {
-    maven{
-        url("http://repo.wilsonsinquest.com/nexus/content/repositories/ardm-dev-track")
-    }
     maven {
-        url "http://repo.wilsonsinquest.com/nexus/content/repositories/releases/"
+        url "http://repository.inquestdevops.com/repository/inquest-oss-releases/"
     }
     mavenCentral()
 }
 dependencies {
-    compile "com.wilsonsinquest.data:Datasource-GCP-Datastore:0.+"
+    compile "com.github.patrickianwilson:AbstractDataRepositories-DatasourceGCPDatastore:1.0.0.+"
     compile "com.github.patrickianwilson:ServicePatterns:1.0.+"
 }
 
