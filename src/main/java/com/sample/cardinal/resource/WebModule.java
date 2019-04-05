@@ -1,14 +1,15 @@
 package com.sample.cardinal.resource;
 
 import com.google.inject.servlet.ServletModule;
+import com.inquestdevops.rabbit.agent.filter.RabbitFilter;
+import com.inquestdevops.rabbit.agent.filter.handlers.BasicInvalidAuthenticationHandler;
+import com.sample.cardinal.filters.CorsFilter;
 import com.sample.cardinal.resource.exceptions.EntityAlreadyExistsExceptionHandler;
 import com.sample.cardinal.resource.exceptions.EntityNotFoundExceptionHandler;
 import com.sample.cardinal.resource.exceptions.InvalidInputExceptionHandler;
-import com.sample.cardinal.filters.CorsFilter;
 import com.sample.cardinal.serializers.JsonStreamReaderWriter;
-import io.swagger.jaxrs.config.BeanConfig;
-import io.swagger.jaxrs.listing.ApiListingResource;
 import io.swagger.jaxrs.listing.SwaggerSerializers;
+import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource;
 import org.jboss.resteasy.plugins.server.servlet.FilterDispatcher;
 
 /**
@@ -21,7 +22,6 @@ public class WebModule extends ServletModule {
         bind(StatusResource.class);
         bind(UserResource.class);
         bind(JsonStreamReaderWriter.class);
-        configureSwagger();
 
         //exception handlers
         bind(EntityAlreadyExistsExceptionHandler.class);
@@ -29,22 +29,17 @@ public class WebModule extends ServletModule {
         bind(InvalidInputExceptionHandler.class);
 
         //hook up swagger annotations
-        bind(ApiListingResource.class);
+        bind(OpenApiResource.class);
         bind(SwaggerSerializers.class);
+
+        //hookup authentication and InvalidAuthentication exception handler
+        bind(RabbitFilter.class);
+        bind(BasicInvalidAuthenticationHandler.class);
+
         //boot up the resteasy dispatcher.
         bind(FilterDispatcher.class).asEagerSingleton();
         bind(CorsFilter.class).asEagerSingleton();
         filter("/*").through(FilterDispatcher.class);
         filter("/*").through(CorsFilter.class);
-    }
-
-    private BeanConfig configureSwagger() {
-        BeanConfig config = new BeanConfig();
-
-        config.setBasePath("localhost:8080");
-        config.setTitle("Template Cardinal Service API");
-        config.setScan(true);
-
-        return config;
     }
 }

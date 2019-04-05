@@ -54,11 +54,23 @@ repositories {
     maven {
         url "http://repository.inquestdevops.com/repository/inquest-oss-releases/"
     }
+    maven {
+        url "http://repository.inquestdevops.com/repository/inquest-releases/"
+        credentials {
+            username = System.getenv("REPO_USER")
+            password = System.getenv("REPO_PASSWORD")
+        }
+    }
+    mavenLocal()
     mavenCentral()
 }
 dependencies {
     compile "com.github.patrickianwilson:AbstractDataRepositories-DatasourceGCPDatastore:1.0.0.+"
-    compile "com.github.patrickianwilson:ServicePatterns:1.0.+"
+    compile "com.github.patrickianwilson:ServicePatterns:1.0.0.+"
+    compile "com.github.patrickianwilson:RabbitAgentJaxRs:1.0.0.+"
+    
+    compile group: 'io.swagger.core.v3', name: 'swagger-jaxrs2', version: '2.0.6'
+    compile group: 'io.swagger.core.v3', name: 'swagger-jaxrs2-servlet-initializer', version: '2.0.6'
 }
 
 release.dependsOn "configureZip"

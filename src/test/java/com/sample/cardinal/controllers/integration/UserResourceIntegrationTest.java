@@ -3,6 +3,7 @@ package com.sample.cardinal.controllers.integration;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.sample.cardinal.builders.UserBuilder;
+import com.sample.cardinal.config.ConfigModule;
 import com.sample.cardinal.resource.UserResource;
 import com.sample.cardinal.resource.model.User;
 import com.sample.cardinal.repositories.RepositoryModule;
@@ -25,7 +26,7 @@ import static org.hamcrest.CoreMatchers.is;
  * Created by pwilson on 11/27/17.
  */
 @Slf4j
-public class CreateAppAndEnvPlusDeploymentIntegtrationTest {
+public class UserResourceIntegrationTest {
 
     public static final String USER_NAME = "archer";
     static UserResource userResource = null;
@@ -35,7 +36,10 @@ public class CreateAppAndEnvPlusDeploymentIntegtrationTest {
 
     @BeforeClass
     public static void setup() {
-        Injector context = Guice.createInjector(new TestServiceModule(), new RepositoryModule(), new ControllerModule());
+        Injector context = Guice.createInjector(new TestServiceModule(),
+                new RepositoryModule(),
+                new ControllerModule(),
+                new ConfigModule());
         userResource = context.getInstance(UserResource.class);
         appRepo = context.getInstance(UserRepository.class);
         appBuilder = context.getInstance(UserBuilder.class);

@@ -4,10 +4,7 @@ import com.google.inject.Inject;
 import com.sample.cardinal.resource.exceptions.ExceptionModel;
 import com.sample.cardinal.resource.model.User;
 import com.sample.cardinal.controllers.UserController;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -35,7 +32,8 @@ public class UserResource {
     }
 
     @POST
-    @ApiOperation("Create New User")
+    @ApiOperation(value = "CreateUser",
+            authorizations = {@Authorization("basicAuth")})
     @Consumes("application/json")
     @Produces("application/json")
     @ApiResponses(

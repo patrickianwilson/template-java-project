@@ -9,6 +9,8 @@ import com.patrickwilson.ardm.datasource.gcp.datastore.GCPDatastoreDatasourceAda
 import com.patrickwilson.ardm.proxy.RepositoryProvider;
 import com.sample.cardinal.builders.UserBuilder;
 
+import javax.inject.Named;
+
 /**
  * Created by pwilson on 11/4/17.
  */
@@ -25,8 +27,13 @@ public class RepositoryModule implements Module {
 
 
     @Provides
-    public DataSourceAdaptor provideRepoAdaptor() {
-        return new GCPDatastoreDatasourceAdaptor(DatastoreOptions.getDefaultInstance().getService());
+    public DataSourceAdaptor provideRepoAdaptor(@Named("CassiusApplicationName") String appName, @Named("CassiusEnvironmentName") String envName) {
+        String ns = String.format("%s_%s", appName, envName);
+        return new GCPDatastoreDatasourceAdaptor(DatastoreOptions
+                .newBuilder()
+                .setNamespace(ns)
+                .build()
+                .getService());
     }
 
     @Provides
