@@ -37,8 +37,10 @@ public class UserRepositoryTests {
     @BeforeClass
     public static void setupClass() {
         RepositoryProvider repos = new RepositoryProvider();
-
-        DataSourceAdaptor gcp = new GCPDatastoreDatasourceAdaptor(DatastoreOptions.getDefaultInstance().getService());
+        DataSourceAdaptor gcp = new GCPDatastoreDatasourceAdaptor(DatastoreOptions.newBuilder()
+                .setNamespace("unittests")
+                .build()
+                .getService());
         userRepo = repos.bind(UserRepository.class).to(gcp);
 
         userBuilder = new UserBuilder(userRepo);
