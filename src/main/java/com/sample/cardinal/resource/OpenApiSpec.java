@@ -11,18 +11,6 @@ import io.swagger.v3.oas.annotations.security.SecuritySchemes;
         description = "A template API ready to be extended!",
         version = "1"
 ))
-
-/*
-Remove if your application does not use auth.  By default the Rabbit agent is enabled and thus
-basicAuth is enabled.
- */
-@SecuritySchemes({
-        @SecurityScheme(
-                name = "basicAuth",
-                type = SecuritySchemeType.HTTP,
-                scheme = "basic"
-        )
-})
 public class OpenApiSpec  {
 
 }

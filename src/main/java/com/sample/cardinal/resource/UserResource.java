@@ -5,6 +5,10 @@ import com.sample.cardinal.resource.exceptions.ExceptionModel;
 import com.sample.cardinal.resource.model.User;
 import com.sample.cardinal.controllers.UserController;
 import io.swagger.annotations.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -32,17 +36,20 @@ public class UserResource {
     }
 
     @POST
-    @ApiOperation(value = "CreateUser",
-            authorizations = {@Authorization("basicAuth")})
+    @Operation(summary = "RegisterMajorVersion",
+            security = {
+                    @SecurityRequirement(name="rabbitOAuth"),
+                    @SecurityRequirement(name="basicAuth")
+            },
+            responses = {
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", content = @Content(schema = @Schema(implementation = User.class)), description = "User Created"),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", content = @Content(schema = @Schema(implementation = ExceptionModel.class)), description = "Invalid properties on input"),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "409", content = @Content(schema = @Schema(implementation = ExceptionModel.class)), description = "Conflicting Input: The user already exists for this module."),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", content = @Content(schema = @Schema(implementation = ExceptionModel.class)), description = "Internal Server Error")
+            }
+    )
     @Consumes("application/json")
     @Produces("application/json")
-    @ApiResponses(
-           value = {
-                @ApiResponse(code = 201, message = "User Created", response = User.class),
-                @ApiResponse(code = 409, message = "User Already Exists", response = ExceptionModel.class),
-                @ApiResponse(code = 400, message = "Invalid User Details", response = ExceptionModel.class)
-           }
-    )
     public Response createUser(User app) throws URISyntaxException {
         User result = appService.createUser(app);
         return Response.created(new URI(baseUrl+"/"+result.getUserId())).entity(result).build();

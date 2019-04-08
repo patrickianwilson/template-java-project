@@ -17,6 +17,8 @@ import io.swagger.v3.oas.integration.SwaggerConfiguration;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.security.OAuthFlow;
+import io.swagger.v3.oas.models.security.OAuthFlows;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.OpenAPI;
 import org.jboss.resteasy.plugins.guice.GuiceResteasyBootstrapServletContextListener;
@@ -24,6 +26,7 @@ import org.jboss.resteasy.plugins.guice.GuiceResteasyBootstrapServletContextList
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -57,6 +60,11 @@ public class ApplicationContextListener extends GuiceResteasyBootstrapServletCon
         Info openApiInfo = new Info();
         openAPI.info(openApiInfo);
 
+        //programmatically add auth requirements (they require configurable URLS and thus can't be annotated).
+        openAPI.components(new Components()
+                .addSecuritySchemes("basicAuth", getEmergencyBasicAuthSecurity())
+                .addSecuritySchemes("rabbitOAuth", getRabbitOAuthSecurity()));
+
         SwaggerConfiguration openApiConfig = new SwaggerConfiguration()
                 .openAPI(openAPI)
                 .prettyPrint(true)
@@ -73,7 +81,32 @@ public class ApplicationContextListener extends GuiceResteasyBootstrapServletCon
         } catch (OpenApiConfigurationException e) {
             throw new RuntimeException("Exception while booting up Swagger Context!", e);
         }
-
-
     }
+    private SecurityScheme getEmergencyBasicAuthSecurity() {
+        return new SecurityScheme()
+                .name("basicAuth")
+                .type(SecurityScheme.Type.HTTP)
+                .scheme("basic");
+    }
+
+    private SecurityScheme getRabbitOAuthSecurity() {
+        return new SecurityScheme()
+                .name("rabbitOAuth")
+                .type(SecurityScheme.Type.OAUTH2)
+                .flows(new OAuthFlows()
+                        .authorizationCode(new OAuthFlow()
+                                .authorizationUrl(getRabbitAuthorizationUrl())
+                                .tokenUrl(getRabbitTokenUrl())));
+    }
+
+    private String getRabbitAuthorizationUrl() {
+        return Optional.ofNullable(System.getenv("CONFIG_RABBIT_AUTH_URL"))
+                .orElse("http://rabbit-dev.inquestdevops.com/auth/login");
+    }
+
+    private String getRabbitTokenUrl() {
+        return Optional.ofNullable(System.getenv("CONFIG_RABBIT_TOKEN_URL"))
+                .orElse("http://rabbit-dev.inquestdevops.com/token");
+    }
+
 }
