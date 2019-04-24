@@ -14,6 +14,10 @@ gradlew release
 
 ```
 
+## To Run
+
+Locally the server can be run by executing the ```com.sample.cardinal.Runner``` class using the `--port` flag (defaults to `8080`)
+
 ## To Deploy
 
 Set the following app configuration (to override defaults)
