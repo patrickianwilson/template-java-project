@@ -44,3 +44,12 @@ task configureZip {
 }
 
 release.dependsOn "configureZip"
+
+repositories {
+    maven {
+        url "http://repository.inquestdevops.com/repository/inquest-oss-releases/"
+    }
+}
+dependencies {
+    compile group: "com.github.patrickianwilson", name:"CardinalConfigUtils", version: "1.0.0.+"
+}
