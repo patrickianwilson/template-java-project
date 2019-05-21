@@ -39,7 +39,7 @@ public class ConfigModule implements Module {
     @Provides
     public SampleConfig getApplicationConfig(@Named("CassiusEnvironmentName") String envName) {
         ConfigurationSource source = new EnvironmentAwareOverridingClasspathConfigSource(() ->
-                Lists.newArrayList(Paths.get("app-config.yaml")));
+                Lists.newArrayList(Paths.get("app-config.yaml")), ConfigModule.class);
 
         ConfigurationProvider provider =  new ConfigurationProviderBuilder()
                 .withEnvironment(new ImmutableEnvironment(envName))

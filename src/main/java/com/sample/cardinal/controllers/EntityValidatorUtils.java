@@ -1,6 +1,6 @@
 package com.sample.cardinal.controllers;
 
-import com.google.api.client.repackaged.com.google.common.base.Strings;
+import com.google.common.base.Strings;
 import com.sample.cardinal.resource.model.User;
 import com.sample.cardinal.controllers.exceptions.InvalidInputException;
 
