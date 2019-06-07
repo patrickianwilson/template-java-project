@@ -1,21 +1,26 @@
 #!/bin/bash
-
 export WS_URL=http://localhost:8080
 
 export MODULE_PATH=`pwd`
 
 mkdir -p ${MODULE_PATH}/build/tmp
-
-if [ ! -f ${MODULE_PATH}/build/tmp/codegen.jar ]; then
-    wget -O ${MODULE_PATH}/build/tmp/codegen.jar http://central.maven.org/maven2/io/swagger/swagger-codegen-cli/2.2.3/swagger-codegen-cli-2.2.3.jar
+if [[ ! -f ${MODULE_PATH}/build/tmp/openapi-codegen.jar ]]; then
+    wget -O ${MODULE_PATH}/build/tmp/openapi-codegen.jar http://central.maven.org/maven2/org/openapitools/openapi-generator-cli/3.3.4/openapi-generator-cli-3.3.4.jar
 fi
 
-java -jar ${MODULE_PATH}/build/tmp/codegen.jar generate -i ${WS_URL}/swagger.json -l java -o ${MODULE_PATH} -c ${MODULE_PATH}/config/codegen-java-config.json
+java -jar ${MODULE_PATH}/build/tmp/openapi-codegen.jar generate\
+ --input-spec ${WS_URL}/openapi.yaml\
+ --generator-name java\
+ --output ${MODULE_PATH}\
+ --config ${MODULE_PATH}/config/codegen-java-config.json\
+ --skip-validate-spec
+
 
 rm $MODULE_PATH/settings.gradle
 rm $MODULE_PATH/pom.xml
 rm $MODULE_PATH/.travis.yml
 rm $MODULE_PATH/build.sbt
 rm $MODULE_PATH/gradlew*
+rm -r $MODULE_PATH/gradle/
 rm $MODULE_PATH/gradle.properties
 rm $MODULE_PATH/git_push.sh
