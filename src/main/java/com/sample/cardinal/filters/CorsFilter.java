@@ -21,6 +21,8 @@ Use this list to configure the headers that will be exposed via CORS declaration
             .add("origin")
             .add("content-type")
             .add("accept")
+            .add("x-requested-with") //needed to support Swagger UI
+            .add("authorization")
             .build();
 
     /*
