@@ -20,6 +20,7 @@ public class WebModule extends ServletModule {
     public void configureServlets() {
 
         bind(StatusResource.class);
+        bind(DeepStatusResource.class);
         bind(UserResource.class);
         bind(JsonStreamReaderWriter.class);
 

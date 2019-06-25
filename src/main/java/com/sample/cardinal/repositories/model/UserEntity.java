@@ -4,8 +4,7 @@ import com.patrickwilson.ardm.api.annotation.Entity;
 import com.patrickwilson.ardm.api.annotation.Indexed;
 import com.patrickwilson.ardm.api.key.EntityKey;
 import com.patrickwilson.ardm.api.key.Key;
-import lombok.Data;
-import lombok.Getter;
+import lombok.*;
 
 import java.util.List;
 
@@ -14,6 +13,9 @@ import java.util.List;
  */
 @Entity(domainOrTable = "User")
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserEntity {
 
     private EntityKey id;
