@@ -58,7 +58,7 @@ public class RepositoryModule implements Module {
             return GoogleCredentials
                     .fromStream(
                             new FileInputStream(
-                                    Optional.of(System.getenv(CREDENTIALS_KEY))
+                                    Optional.ofNullable(System.getenv(CREDENTIALS_KEY))
                                             .orElseThrow(() ->
                                                     new RuntimeException("Unable To Locate Google Credentials Environment Variable!"))))
                     .createScoped("https://www.googleapis.com/auth/cloud-platform");
