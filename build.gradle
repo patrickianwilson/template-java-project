@@ -26,14 +26,16 @@ if (System.getenv("BUILD_NUMBER") != null) {
     project.version = "${majorVersion}.${buildStream}.${System.getenv("BUILD_NUMBER")}"
 }
 
-ext {
+ext { //customize these...
     moduleName = "template-javaproject-project" //change me!!
+    heapRequirement = "200M"
 }
 
 
 apply plugin: "project.java-standalone"
 apply plugin: "publish.maven"
 mainClassName="com.patrickwilsonconsulting.Runner"
+applicationDefaultJvmArgs = ["-Xms${project.ext.heapRequirement}", "-Xmx${project.ext.heapRequirement}"]
 
 task configureZip {
     finalizedBy distZip
