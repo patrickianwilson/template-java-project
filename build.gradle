@@ -28,7 +28,7 @@ if (System.getenv("BUILD_NUMBER") != null) {
 }
 
 ext {
-    moduleName = "template-javaproject-project" //change me!!
+    moduleName = "template-java-project" //change me!!
     heapRequirement = "200M"
     dockerTag = "${project.moduleName.toLowerCase()}:latest"
     dockerFile = "$projectDir/src/main/deploy/Dockerfile"
@@ -38,8 +38,6 @@ ext {
 apply plugin: "project.cardinal-service"
 apply plugin: "publish.docker"
 
-apply plugin: "project.java-standalone"
-apply plugin: "publish.maven"
 mainClassName="com.sample.cardinal.Runner"
 applicationDefaultJvmArgs = ["-Xms${project.ext.heapRequirement}", "-Xmx${project.ext.heapRequirement}"]
 
