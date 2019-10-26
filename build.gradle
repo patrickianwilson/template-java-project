@@ -12,6 +12,7 @@ buildscript {
     dependencies {
         classpath "com.inquestdevops:WarblerBuildGradlePlugin:1.0.+"
         classpath "com.inquestdevops:WarblerPublishGradlePlugin:1.0.+"
+        classpath "com.inquestdevops:ProjectTemplatesGradlePlugin:1.0.+"
         classpath "net.ltgt.gradle:gradle-apt-plugin:0.15"
     }
 }
@@ -26,16 +27,22 @@ if (System.getenv("BUILD_NUMBER") != null) {
     project.version = "${majorVersion}.${buildStream}.${System.getenv("BUILD_NUMBER")}"
 }
 
-ext { //customize these...
+ext {
     moduleName = "template-javaproject-project" //change me!!
     heapRequirement = "200M"
+    dockerTag = "${project.moduleName.toLowerCase()}:latest"
+    dockerFile = "$projectDir/src/main/deploy/Dockerfile"
+    dockerImagePath="us.gcr.io/inlaid-citron-94802/services/${project.moduleName.toLowerCase()}:${project.version}"
 }
 
+apply plugin: "project.cardinal-service"
+apply plugin: "publish.docker"
 
 apply plugin: "project.java-standalone"
 apply plugin: "publish.maven"
-mainClassName="com.patrickwilsonconsulting.Runner"
+mainClassName="com.sample.cardinal.Runner"
 applicationDefaultJvmArgs = ["-Xms${project.ext.heapRequirement}", "-Xmx${project.ext.heapRequirement}"]
+
 
 task configureZip {
     finalizedBy distZip
@@ -47,11 +54,31 @@ task configureZip {
 
 release.dependsOn "configureZip"
 
+
 repositories {
     maven {
         url "http://repository.inquestdevops.com/repository/inquest-oss-releases/"
     }
+    maven {
+        url "http://repository.inquestdevops.com/repository/inquest-releases/"
+        credentials {
+            username = System.getenv("REPO_USER")
+            password = System.getenv("REPO_PASSWORD")
+        }
+    }
+    mavenLocal()
+    mavenCentral()
 }
 dependencies {
+    compile "com.github.patrickianwilson:AbstractDataRepositories-DatasourceGCPDatastore:1.0.0.+"
+    compile "com.github.patrickianwilson:ServicePatterns:1.0.0.+"
+    compile "com.github.patrickianwilson:RabbitAgentJaxRs:1.0.0.+"
     compile group: "com.github.patrickianwilson", name:"CardinalConfigUtils", version: "1.0.0.+"
+    compile group: 'io.swagger.core.v3', name: 'swagger-jaxrs2', version: '2.0.6'
+    compile group: 'io.swagger.core.v3', name: 'swagger-jaxrs2-servlet-initializer', version: '2.0.6'
+
+    compile "com.beust:jcommander:1.72"
 }
+
+release.dependsOn "configureZip"
+
