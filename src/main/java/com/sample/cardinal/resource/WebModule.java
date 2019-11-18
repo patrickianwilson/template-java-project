@@ -3,10 +3,12 @@ package com.sample.cardinal.resource;
 import com.google.inject.servlet.ServletModule;
 import com.inquestdevops.rabbit.agent.filter.RabbitFilter;
 import com.inquestdevops.rabbit.agent.filter.handlers.BasicInvalidAuthenticationHandler;
+import com.inquestdevops.rabbit.agent.filter.handlers.BasicUnauthorizedExceptionHandler;
 import com.sample.cardinal.filters.CorsFilter;
 import com.sample.cardinal.resource.exceptions.EntityAlreadyExistsExceptionHandler;
 import com.sample.cardinal.resource.exceptions.EntityNotFoundExceptionHandler;
 import com.sample.cardinal.resource.exceptions.InvalidInputExceptionHandler;
+import com.sample.cardinal.resource.exceptions.UnknownServiceExceptionHandler;
 import com.sample.cardinal.serializers.JsonStreamReaderWriter;
 import io.swagger.jaxrs.listing.SwaggerSerializers;
 import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource;
@@ -28,6 +30,7 @@ public class WebModule extends ServletModule {
         bind(EntityAlreadyExistsExceptionHandler.class);
         bind(EntityNotFoundExceptionHandler.class);
         bind(InvalidInputExceptionHandler.class);
+        bind(UnknownServiceExceptionHandler.class);
 
         //hook up swagger annotations
         bind(OpenApiResource.class);
@@ -36,6 +39,7 @@ public class WebModule extends ServletModule {
         //hookup authentication and InvalidAuthentication exception handler
         bind(RabbitFilter.class);
         bind(BasicInvalidAuthenticationHandler.class);
+        bind(BasicUnauthorizedExceptionHandler.class);
 
         //boot up the resteasy dispatcher.
         bind(FilterDispatcher.class).asEagerSingleton();
