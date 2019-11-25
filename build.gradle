@@ -16,6 +16,14 @@ buildscript {
     }
 }
 
+ext {
+    moduleName = "template-javaproject-project" //change me!!
+}
+
+
+apply plugin: "project.java"
+apply plugin: "publish.maven"
+
 project.version = 'dev.1'
 project.group = "com.github.patrickianwilson"
 
@@ -24,11 +32,3 @@ if (System.getenv("BUILD_NUMBER") != null) {
     def buildStream = "0"
     project.version = "${majorVersion}.${buildStream}.${System.getenv("BUILD_NUMBER")}"
 }
-
-ext {
-    moduleName = "template-javaproject-project" //change me!!
-}
-
-
-apply plugin: "project.java"
-apply plugin: "publish.maven"
