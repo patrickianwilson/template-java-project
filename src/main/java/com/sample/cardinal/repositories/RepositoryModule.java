@@ -6,6 +6,7 @@ import com.google.cloud.datastore.DatastoreOptions;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.Provides;
+import com.google.inject.Singleton;
 import com.patrickwilson.ardm.datasource.api.DataSourceAdaptor;
 import com.patrickwilson.ardm.datasource.gcp.datastore.GCPDatastoreDatasourceAdaptor;
 import com.patrickwilson.ardm.proxy.RepositoryProvider;
@@ -28,12 +29,14 @@ public class RepositoryModule implements Module {
     }
 
     @Provides
+    @Singleton
     public UserRepository provideUserRepositoryRepositoryImpl(RepositoryProvider repos, DataSourceAdaptor adaptor) {
         return repos.bind(UserRepository.class).to(adaptor);
     }
 
 
     @Provides
+    @Singleton
     public DataSourceAdaptor provideRepoAdaptor(@Named("CassiusApplicationName") String appName,
                                                 @Named("CassiusEnvironmentName") String envName,
                                                 @Named("GoogleCreds") Credentials googleCreds) {
@@ -47,12 +50,14 @@ public class RepositoryModule implements Module {
     }
 
     @Provides
+    @Singleton
     public RepositoryProvider provideRepositoryProvider() {
         return new RepositoryProvider();
     }
 
     @Provides
     @Named("GoogleCreds")
+    @Singleton
     public Credentials getGoogleCredentials() {
         try {
             return GoogleCredentials

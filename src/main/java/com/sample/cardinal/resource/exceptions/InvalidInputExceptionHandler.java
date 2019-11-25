@@ -1,5 +1,6 @@
 package com.sample.cardinal.resource.exceptions;
 
+import com.inquestdevops.cardinal.base.model.ExceptionModel;
 import com.sample.cardinal.controllers.exceptions.InvalidInputException;
 
 import javax.ws.rs.Produces;

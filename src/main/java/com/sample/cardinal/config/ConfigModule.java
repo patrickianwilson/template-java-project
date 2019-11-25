@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.Provides;
+import com.google.inject.Singleton;
 import com.inquestdevops.config.EnvironmentAwareOverridingClasspathConfigSource;
 import org.cfg4j.provider.ConfigurationProvider;
 import org.cfg4j.provider.ConfigurationProviderBuilder;
@@ -23,6 +24,7 @@ public class ConfigModule implements Module {
 
     @Named("CassiusApplicationName")
     @Provides
+    @Singleton
     public String getCassiusApplicationName() {
         return Optional.ofNullable(System.getenv("CASSIUS_APP_NAME"))
                 .orElse("LocalApp");
@@ -30,6 +32,7 @@ public class ConfigModule implements Module {
 
     @Named("CassiusEnvironmentName")
     @Provides
+    @Singleton
     public String getCassiusEnvironmentName() {
         return Optional.ofNullable(System.getenv("CASSIUS_ENV_NAME"))
                 .orElse("LocalEnv");
@@ -37,6 +40,7 @@ public class ConfigModule implements Module {
 
     @Named("SampleConfig")
     @Provides
+    @Singleton
     public SampleConfig getApplicationConfig(@Named("CassiusEnvironmentName") String envName) {
         ConfigurationSource source = new EnvironmentAwareOverridingClasspathConfigSource(() ->
                 Lists.newArrayList(Paths.get("app-config.yaml")), ConfigModule.class);

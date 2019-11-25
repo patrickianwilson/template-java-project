@@ -1,5 +1,6 @@
 package com.sample.cardinal.resource;
 
+import com.google.inject.Singleton;
 import com.google.inject.servlet.ServletModule;
 import com.inquestdevops.rabbit.agent.filter.RabbitFilter;
 import com.inquestdevops.rabbit.agent.filter.handlers.BasicInvalidAuthenticationHandler;
@@ -21,25 +22,25 @@ public class WebModule extends ServletModule {
     @Override
     public void configureServlets() {
 
-        bind(StatusResource.class);
-        bind(DeepStatusResource.class);
-        bind(UserResource.class);
-        bind(JsonStreamReaderWriter.class);
+        bind(StatusResource.class).asEagerSingleton();
+        bind(DeepStatusResource.class).asEagerSingleton();
+        bind(UserResource.class).in(Singleton.class);
+        bind(JsonStreamReaderWriter.class).in(Singleton.class);
 
         //exception handlers
-        bind(EntityAlreadyExistsExceptionHandler.class);
-        bind(EntityNotFoundExceptionHandler.class);
-        bind(InvalidInputExceptionHandler.class);
-        bind(UnknownServiceExceptionHandler.class);
+        bind(EntityAlreadyExistsExceptionHandler.class).in(Singleton.class);
+        bind(EntityNotFoundExceptionHandler.class).in(Singleton.class);
+        bind(InvalidInputExceptionHandler.class).in(Singleton.class);
+        bind(UnknownServiceExceptionHandler.class).in(Singleton.class);
 
         //hook up swagger annotations
-        bind(OpenApiResource.class);
-        bind(SwaggerSerializers.class);
+        bind(OpenApiResource.class).asEagerSingleton();
+        bind(SwaggerSerializers.class).in(Singleton.class);
 
         //hookup authentication and InvalidAuthentication exception handler
-        bind(RabbitFilter.class);
-        bind(BasicInvalidAuthenticationHandler.class);
-        bind(BasicUnauthorizedExceptionHandler.class);
+        bind(RabbitFilter.class).in(Singleton.class);
+        bind(BasicInvalidAuthenticationHandler.class).in(Singleton.class);
+        bind(BasicUnauthorizedExceptionHandler.class).in(Singleton.class);
 
         //boot up the resteasy dispatcher.
         bind(FilterDispatcher.class).asEagerSingleton();

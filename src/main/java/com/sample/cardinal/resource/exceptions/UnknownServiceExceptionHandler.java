@@ -1,5 +1,6 @@
 package com.sample.cardinal.resource.exceptions;
 
+import com.inquestdevops.cardinal.base.model.ExceptionModel;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.ws.rs.core.Response;

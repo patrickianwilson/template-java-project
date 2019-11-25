@@ -1,6 +1,7 @@
 package com.sample.cardinal.resource.exceptions;
 
 
+import com.inquestdevops.cardinal.base.model.ExceptionModel;
 import com.sample.cardinal.controllers.exceptions.EntityAlreadyExistsException;
 
 import javax.ws.rs.core.Response;
