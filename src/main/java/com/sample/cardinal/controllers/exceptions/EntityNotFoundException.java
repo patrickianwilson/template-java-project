@@ -1,7 +1,7 @@
 package com.sample.cardinal.controllers.exceptions;
 
 
-import com.sample.cardinal.serializers.ApiObject;
+import com.inquestdevops.cardinal.base.model.ApiObject;
 
 /**
  * Created by pwilson on 9/22/17.

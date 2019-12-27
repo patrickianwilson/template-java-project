@@ -1,5 +1,6 @@
 package com.sample.cardinal.controllers.exceptions;
 
+import com.inquestdevops.cardinal.base.model.ApiObject;
 import lombok.Getter;
 
 /**
@@ -7,10 +8,10 @@ import lombok.Getter;
  */
 @Getter
 public class EntityAlreadyExistsException extends RuntimeException {
-    private Class modelClazz;
+    private Class<? extends ApiObject> modelClazz;
     private String id;
 
-    public EntityAlreadyExistsException(Class modelClazz, String id) {
+    public EntityAlreadyExistsException(Class<? extends ApiObject> modelClazz, String id) {
         super(String.format("Conflict: A %s with id '%s' already exists!", modelClazz.getSimpleName(), id));
         this.modelClazz = modelClazz;
         this.id = id;

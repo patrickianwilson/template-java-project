@@ -72,6 +72,7 @@ dependencies {
     compile "com.github.patrickianwilson:ServicePatterns:1.0.0.+"
     compile "com.github.patrickianwilson:RabbitAgentJaxRs:1.0.0.+"
     compile group: "com.github.patrickianwilson", name:"CardinalConfigUtils", version: "1.0.0.+"
+    compile group: "com.github.patrickianwilson", name:"CardinalServiceBase", version: "1.0.0.+"
     compile group: 'io.swagger.core.v3', name: 'swagger-jaxrs2', version: '2.0.6'
     compile group: 'io.swagger.core.v3', name: 'swagger-jaxrs2-servlet-initializer', version: '2.0.6'
 

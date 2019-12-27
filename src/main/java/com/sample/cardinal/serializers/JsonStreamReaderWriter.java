@@ -4,6 +4,7 @@ import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import com.google.gson.Gson;
+import com.inquestdevops.cardinal.base.model.ApiObject;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

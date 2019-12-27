@@ -1,6 +1,6 @@
 package com.sample.cardinal.resource.model;
 
-import com.sample.cardinal.serializers.ApiObject;
+import com.inquestdevops.cardinal.base.model.ApiObject;
 import lombok.Data;
 
 import java.util.Map;
