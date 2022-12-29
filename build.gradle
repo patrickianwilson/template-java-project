@@ -1,7 +1,11 @@
 buildscript {
     repositories {
         maven {
-            url "http://repository.inquestdevops.com/repository/inquest-oss-releases/"
+            url "https://maven.pkg.jetbrains.space/inquest/p/buildtools/gradle-plugins-internal"
+            credentials {
+                username = spaceUsername
+                password = spacePassword
+            }
         }
         maven {
             url "https://plugins.gradle.org/m2/"
@@ -11,18 +15,10 @@ buildscript {
     }
     dependencies {
         classpath "com.inquestdevops:WarblerBuildGradlePlugin:1.0.+"
-        classpath "com.inquestdevops:WarblerPublishGradlePlugin:1.0.+"
         classpath "net.ltgt.gradle:gradle-apt-plugin:0.15"
+        classpath "io.freefair.gradle:lombok-plugin:6.4.1"
     }
 }
-
-ext {
-    moduleName = "template-javaproject-project" //change me!!
-}
-
-
-apply plugin: "project.java"
-apply plugin: "publish.maven"
 
 project.version = 'dev.1'
 project.group = "com.github.patrickianwilson"
@@ -32,3 +28,37 @@ if (System.getenv("BUILD_NUMBER") != null) {
     def buildStream = "0"
     project.version = "${majorVersion}.${buildStream}.${System.getenv("BUILD_NUMBER")}"
 }
+
+ext {
+    moduleName = "ChangeMe" //change me!!
+    publicationUrl = "https://maven.pkg.jetbrains.space/inquest/p/buildtools/build-tools" //Change me!
+}
+
+apply plugin: "project.java"
+
+dependencies {
+    api group: "org.cfg4j", name:"cfg4j-core", version: "4.4.0"
+}
+
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId "${project.ext.moduleName}"
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            name = 'mavenInternal'
+            url = project.ext.publicationUrl
+            credentials {
+                username = spaceUsername
+                password = spacePassword
+            }
+        }
+    }
+}
+
+tasks.release.dependsOn "validate"
+
