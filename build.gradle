@@ -30,16 +30,15 @@ if (System.getenv("BUILD_NUMBER") != null) {
 }
 
 ext {
-    moduleName = "ChangeMe" //change me!!
-    publicationUrl = "https://maven.pkg.jetbrains.space/inquest/p/buildtools/build-tools" //Change me!
+    moduleName = "ChangeMe!!" //change me!!
 }
+
 
 apply plugin: "project.java"
 
 dependencies {
-    api group: "org.cfg4j", name:"cfg4j-core", version: "4.4.0"
-}
 
+}
 
 publishing {
     publications {
@@ -51,7 +50,7 @@ publishing {
     repositories {
         maven {
             name = 'mavenInternal'
-            url = project.ext.publicationUrl
+            url "https://maven.pkg.jetbrains.space/inquest/p/buildtools/build-tools"
             credentials {
                 username = spaceUsername
                 password = spacePassword
@@ -61,4 +60,6 @@ publishing {
 }
 
 tasks.release.dependsOn "validate"
-
+if (project.version != "dev.1") {
+    project.tasks.release.dependsOn("publishAllPublicationsToMavenInternalRepository")
+}

@@ -1,15 +1,9 @@
-import jetbrains.buildServer.configs.kotlin.*
-import jetbrains.buildServer.configs.kotlin.buildFeatures.commitStatusPublisher
-import jetbrains.buildServer.configs.kotlin.buildFeatures.dockerSupport
-import jetbrains.buildServer.configs.kotlin.buildSteps.DockerCommandStep
-import jetbrains.buildServer.configs.kotlin.buildSteps.dockerCommand
-import jetbrains.buildServer.configs.kotlin.buildSteps.gradle
-import jetbrains.buildServer.configs.kotlin.buildSteps.script
-import jetbrains.buildServer.configs.kotlin.buildSteps.GradleBuildStep
-import jetbrains.buildServer.configs.kotlin.buildSteps.ScriptBuildStep
-
-import jetbrains.buildServer.configs.kotlin.triggers.vcs
-import jetbrains.buildServer.configs.kotlin.triggers.finishBuildTrigger
+import jetbrains.buildServer.configs.kotlin.v2019_2.*
+import jetbrains.buildServer.configs.kotlin.v2019_2.buildFeatures.commitStatusPublisher
+import jetbrains.buildServer.configs.kotlin.v2019_2.buildFeatures.dockerSupport
+import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.GradleBuildStep
+import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.gradle
+import jetbrains.buildServer.configs.kotlin.v2019_2.triggers.vcs
 
 /*
 The settings script is an entry point for defining a TeamCity
@@ -42,20 +36,20 @@ object BuildConstants{
 
 project {
 
-    buildType(Build)
-    buildType(Release)
+    buildType(BuildAndInternalPublish)
 }
 
-object Build : BuildType({
-    name = "Build"
-    artifactRules = "build/**/* => build_artifacts"
+object BuildAndInternalPublish : BuildType({
+    name = "Build and Internal Publish"
+
+
     vcs {
         root(DslContext.settingsRoot)
     }
 
     steps {
         gradle {
-            tasks = "release"
+            tasks = "clean release"
             useGradleWrapper = false
             dockerImagePlatform = GradleBuildStep.ImagePlatform.Linux
             dockerPull = true
@@ -81,52 +75,6 @@ object Build : BuildType({
                     connectionId = "PROJECT_EXT_2"
                 }
                 displayName = "TeamCity"
-            }
-        }
-    }
-})
-
-object Release : BuildType({
-    name = "Release"
-    maxRunningBuilds = 1
-    type = BuildTypeSettings.Type.DEPLOYMENT
-    enablePersonalBuilds = false
-    vcs {
-        root(DslContext.settingsRoot)
-    }
-
-    steps {
-        gradle {
-            tasks = "publishAllPublicationsToMavenInternalRepository"
-            useGradleWrapper = false
-            dockerImagePlatform = GradleBuildStep.ImagePlatform.Linux
-            dockerImage = "inquest.registry.jetbrains.space/p/buildtools/buildimages/buildimage:latest"
-        }
-    }
-
-    triggers {
-        finishBuildTrigger {
-            buildType = "${Build.id}"
-            successfulOnly = true
-        }
-    }
-    features {
-        dockerSupport {
-            loginToRegistry = on {
-                dockerRegistryId = "PROJECT_EXT_5"
-            }
-        }
-    }
-
-    dependencies {
-        dependency(Build) {
-            snapshot {
-                onDependencyFailure = FailureAction.CANCEL
-                onDependencyCancel = FailureAction.CANCEL
-            }
-
-            artifacts {
-                artifactRules = "build_artifacts/**"
             }
         }
     }
