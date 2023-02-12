@@ -1,0 +1,6 @@
+application:
+  oauthAuthorizationUrl: "http://rabbit.inquestdevops.com/auth/login"
+  oauthCompletionUrl: "http://rabbit.inquestdevops.com/auth/merc/complete"
+  oauthTokenUrl: "http://rabbit.inquestdevops.com/token"
+  rabbitBasePath: "http://rabbit.inquestdevops.com"
+  port: 8080

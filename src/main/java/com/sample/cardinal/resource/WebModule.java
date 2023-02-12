@@ -11,7 +11,7 @@ import com.sample.cardinal.resource.exceptions.EntityNotFoundExceptionHandler;
 import com.sample.cardinal.resource.exceptions.InvalidInputExceptionHandler;
 import com.sample.cardinal.resource.exceptions.UnknownServiceExceptionHandler;
 import com.sample.cardinal.serializers.JsonStreamReaderWriter;
-import io.swagger.jaxrs.listing.SwaggerSerializers;
+import io.swagger.v3.jaxrs2.SwaggerSerializers;
 import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource;
 import org.jboss.resteasy.plugins.server.servlet.FilterDispatcher;
 
