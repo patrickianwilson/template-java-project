@@ -1,2 +1,7 @@
 application:
   version: 0.1
+
+  clientId: ""
+  redirectUri: ""
+  responseType: "code"
+  scope: "name"
