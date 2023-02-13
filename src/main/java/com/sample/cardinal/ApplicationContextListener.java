@@ -18,11 +18,16 @@ import java.util.List;
  */
 public class ApplicationContextListener extends GuiceResteasyBootstrapServletContextListener {
 
+    private final String componentName;
+
+    public ApplicationContextListener(final String componentName) {
+        this.componentName = componentName;
+    }
     @Override
     protected List<Module> getModules(ServletContext context) {
         context.setAttribute("resteasy.scan", "true");
         return ImmutableList.of(
-                new WebModule(),
+                new WebModule(componentName),
                 new ControllerModule(),
                 new RepositoryModule(),
                 new AccessorModule(),
