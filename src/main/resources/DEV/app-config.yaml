@@ -1,6 +1,9 @@
 application:
   oauthAuthorizationUrl: "http://rabbit-dev.inquestdevops.com/auth/login"
-  oauthCompletionUrl: "http://rabbit-dev.inquestdevops.com/auth/merc/complete"
   oauthTokenUrl: "http://rabbit-dev.inquestdevops.com/token"
   rabbitBasePath: "http://rabbit-dev.inquestdevops.com"
   port: 8080
+  clientId: ""
+  redirectUri: ""
+  scope: "name"
+  responseType: "code"

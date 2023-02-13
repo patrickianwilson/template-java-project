@@ -19,11 +19,13 @@ import com.sample.cardinal.resource.exceptions.EntityAlreadyExistsExceptionHandl
 import com.sample.cardinal.resource.exceptions.EntityNotFoundExceptionHandler;
 import com.sample.cardinal.resource.exceptions.InvalidInputExceptionHandler;
 import com.sample.cardinal.resource.exceptions.UnknownServiceExceptionHandler;
+import com.sample.cardinal.resource.view.AccountLoginResource;
 import com.sample.cardinal.serializers.JsonStreamReaderWriter;
 import io.swagger.v3.jaxrs2.SwaggerSerializers;
 import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource;
 import org.jboss.resteasy.plugins.server.servlet.FilterDispatcher;
 
+import javax.inject.Named;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -56,6 +58,9 @@ public class WebModule extends ServletModule {
         //hookup authentication and InvalidAuthentication exception handler
         bind(BasicInvalidAuthenticationHandler.class).in(Singleton.class);
         bind(BasicUnauthorizedExceptionHandler.class).in(Singleton.class);
+
+        //hookup views
+        bind(AccountLoginResource.class).in(Singleton.class);
 
         //boot up the resteasy dispatcher.
         bind(FilterDispatcher.class).asEagerSingleton();
@@ -92,6 +97,8 @@ public class WebModule extends ServletModule {
     public PermissionsProvider getPermissionsProvider(Provider<DefaultApi> rabbitClientProvider) {
         return new RabbitPermissionsProvider(rabbitClientProvider, this.componentName + ".*");
     }
+
+
 
 
 
