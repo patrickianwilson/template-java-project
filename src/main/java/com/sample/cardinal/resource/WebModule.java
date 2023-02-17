@@ -4,6 +4,7 @@ import com.google.inject.Provider;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.google.inject.servlet.ServletModule;
+import com.inquestdevops.cardinal.ui.ThymeleafMessageBodyWriter;
 import com.inquestdevops.rabbit.agent.AuthorizationManager;
 import com.inquestdevops.rabbit.agent.DefaultAuthorizationManager;
 import com.inquestdevops.rabbit.agent.filter.PermissionsProvider;
@@ -20,6 +21,7 @@ import com.sample.cardinal.resource.exceptions.EntityNotFoundExceptionHandler;
 import com.sample.cardinal.resource.exceptions.InvalidInputExceptionHandler;
 import com.sample.cardinal.resource.exceptions.UnknownServiceExceptionHandler;
 import com.sample.cardinal.resource.view.AccountLoginResource;
+import com.sample.cardinal.resource.view.HomePageResource;
 import com.sample.cardinal.serializers.JsonStreamReaderWriter;
 import io.swagger.v3.jaxrs2.SwaggerSerializers;
 import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource;
@@ -61,6 +63,7 @@ public class WebModule extends ServletModule {
 
         //hookup views
         bind(AccountLoginResource.class).in(Singleton.class);
+        bind(HomePageResource.class).in(Singleton.class);
 
         //boot up the resteasy dispatcher.
         bind(FilterDispatcher.class).asEagerSingleton();
@@ -98,6 +101,11 @@ public class WebModule extends ServletModule {
         return new RabbitPermissionsProvider(rabbitClientProvider, this.componentName + ".*");
     }
 
+    @Provides
+    @Singleton
+    public ThymeleafMessageBodyWriter getThymeleafProvider() {
+        return new ThymeleafMessageBodyWriter(this.getClass());
+    }
 
 
 
