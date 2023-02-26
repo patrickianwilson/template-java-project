@@ -41,7 +41,7 @@ version = "2021.2"
 project {
 
     buildType(Build)
-    buildType(IntTestDev)
+//    buildType(IntTestDev)
     buildType(DeployDev)
     buildType(DeployProd)
 }
@@ -173,59 +173,60 @@ object DeployDev : BuildType({
     }
 })
 
-object IntTestVcsRoot: GitVcsRoot({
-    /* FIXME */
+//object IntTestVcsRoot: GitVcsRoot({
+//    /* FIXME */
+//
+//    id("SshGitGitJetbrainsSpaceInquestBuildtoolsModuleMercuryServiceIntegTestsGitRefsHeadsMaster")
+//    name = "ssh://git@git.jetbrains.space/inquest/buildtools/Module-MercuryServiceIntegTests.git#refs/heads/master"
+//    url = "ssh://git@git.jetbrains.space/inquest/buildtools/Module-MercuryServiceIntegTests.git"
+//    branch = "refs/heads/master"
+//    branchSpec = "refs/heads/*"
+//    authMethod = uploadedKey {
+//        userName = "git"
+//        uploadedKey = "SpaceSshKey"
+//    }
+//})
+//
+//object IntTestDev: BuildType({
+//
+//    name = "IntTestDev"
+//    artifactRules = "+:build/**/* => build_artifacts,+:src/main/deploy/Dockerfile => build_artifacts"
+//    vcs {
+//        /* FIXME */
+//        root(RelativeId("SshGitGitJetbrainsSpaceInquestBuildtoolsModuleMercuryServiceIntegTestsGitRefsHeadsMaster"))
+//    }
+//
+//    steps {
+//        gradle {
+//            tasks = "intTest"
+//            useGradleWrapper = false
+//        }
+//    }
+//
+//    triggers {
+//        vcs {
+//        }
+//    }
+//
+//    features {
+//        perfmon {
+//        }
+//    }
+//
+//    dependencies {
+//        dependency(DeployDev) {
+//            snapshot {
+//                onDependencyFailure = FailureAction.CANCEL
+//                onDependencyCancel = FailureAction.CANCEL
+//            }
+//
+//            artifacts {
+//                artifactRules = "build_artifacts/**"
+//            }
+//        }
+//    }
+//})
 
-    id("SshGitGitJetbrainsSpaceInquestBuildtoolsModuleMercuryServiceIntegTestsGitRefsHeadsMaster")
-    name = "ssh://git@git.jetbrains.space/inquest/buildtools/Module-MercuryServiceIntegTests.git#refs/heads/master"
-    url = "ssh://git@git.jetbrains.space/inquest/buildtools/Module-MercuryServiceIntegTests.git"
-    branch = "refs/heads/master"
-    branchSpec = "refs/heads/*"
-    authMethod = uploadedKey {
-        userName = "git"
-        uploadedKey = "SpaceSshKey"
-    }
-})
-
-object IntTestDev: BuildType({
-
-    name = "IntTestDev"
-    artifactRules = "+:build/**/* => build_artifacts,+:src/main/deploy/Dockerfile => build_artifacts"
-    vcs {
-        /* FIXME */
-        root(RelativeId("SshGitGitJetbrainsSpaceInquestBuildtoolsModuleMercuryServiceIntegTestsGitRefsHeadsMaster"))
-    }
-
-    steps {
-        gradle {
-            tasks = "intTest"
-            useGradleWrapper = false
-        }
-    }
-
-    triggers {
-        vcs {
-        }
-    }
-
-    features {
-        perfmon {
-        }
-    }
-
-    dependencies {
-        dependency(DeployDev) {
-            snapshot {
-                onDependencyFailure = FailureAction.CANCEL
-                onDependencyCancel = FailureAction.CANCEL
-            }
-
-            artifacts {
-                artifactRules = "build_artifacts/**"
-            }
-        }
-    }
-})
 object DeployProd : BuildType({
     name = "Deploy to Prod"
 
