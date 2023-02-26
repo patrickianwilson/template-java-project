@@ -277,7 +277,7 @@ object DeployProd : BuildType({
     }
 
     dependencies {
-        dependency(DeployDev) {
+        dependency(DeployDev) { //update this to IntTestDev to enable integ testing in DEV prior to Prod deployment
             snapshot {
                 onDependencyFailure = FailureAction.CANCEL
                 onDependencyCancel = FailureAction.CANCEL
