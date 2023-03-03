@@ -35,6 +35,9 @@ ext {
     heapRequirement = "200M"
 }
 
+project.configurations {
+    wasm
+}
 
 apply plugin: "project.cardinal-service"
 
@@ -82,6 +85,18 @@ dependencies {
     implementation group: 'io.swagger.core.v3', name: 'swagger-jaxrs2-servlet-initializer', version: '2.0.6'
     implementation "com.beust:jcommander:1.72"
 }
+
+project.task([type: Copy], "copyWASMDeps", {
+    dependsOn project.configurations.wasm
+    from {
+        project.configurations.wasm.each { project.logger.info("Found Dependency: $it")}
+        project.configurations.wasm.collect { project.zipTree(it) }
+    }
+    into "${project.projectDir}/build/assets"
+    outputs.upToDateWhen({false})
+})
+
+project.tasks.pkg.dependsOn("copyWASMDeps")
 
 publishing {
     publications {
