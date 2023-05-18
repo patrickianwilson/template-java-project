@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <project>
   <modelVersion>4.0.0</modelVersion>
-  <name>BuildTools_WarblerBuildGradlePlugin_WarblerBuildGradlePlugin Config DSL Script</name>
-  <groupId>BuildTools_WarblerBuildGradlePlugin_WarblerBuildGradlePlugin</groupId>
-  <artifactId>BuildTools_WarblerBuildGradlePlugin_WarblerBuildGradlePlugin_dsl</artifactId>
+  <name>BuildTools_%%{{ModuleName}%%_%%{{ModuleName}%% Config DSL Script</name>
+  <groupId>BuildTools_%%{{ModuleName}%%_%%{{ModuleName}%%</groupId>
+  <artifactId>BuildTools_%%{{ModuleName}%%_%%{{ModuleName}%%_dsl</artifactId>
   <version>1.0-SNAPSHOT</version>
 
   <parent>
