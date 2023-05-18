@@ -15,6 +15,7 @@ buildscript {
     }
     dependencies {
         classpath "com.inquestdevops:WarblerBuildGradlePlugin:1.0.+"
+        classpath "com.inquestdevops:ProjectTemplatesGradlePlugin:1.0.+"
         classpath "net.ltgt.gradle:gradle-apt-plugin:0.15"
         classpath "io.freefair.gradle:lombok-plugin:6.4.1"
     }
@@ -31,13 +32,53 @@ if (System.getenv("BUILD_NUMBER") != null) {
 
 ext {
     moduleName = "%%{{ModuleName}}%%" //change me!!
+    heapRequirement = "200M"
 }
 
 
 apply plugin: "project.java"
+apply plugin: "project.java-standalone"
+mainClassName="com.sample.cardinal.Runner"
+applicationDefaultJvmArgs = ["-Xms${project.ext.heapRequirement}", "-Xmx${project.ext.heapRequirement}"]
+
+task configureZip {
+    finalizedBy distZip
+    doLast {
+        distZip.archiveName = "${moduleName}.zip"
+        startScripts.applicationName = "${moduleName}"
+    }
+}
+
+release.dependsOn "configureZip"
+
+
+repositories {
+    maven {
+        url "https://maven.pkg.jetbrains.space/inquest/p/abstractdatareporitories/adr-repository"
+        credentials {
+            username = spaceUsername
+            password = spacePassword
+        }
+    }
+    maven {
+        url "https://maven.pkg.jetbrains.space/inquest/p/buildtools/build-tools"
+        credentials {
+            username = spaceUsername
+            password = spacePassword
+        }
+    }
+    mavenLocal()
+    mavenCentral()
+}
 
 dependencies {
-
+    implementation "com.github.patrickianwilson:AbstractDataRepositories-DatasourceGCPDatastore:1.0.0.+"
+    implementation "com.github.patrickianwilson:ServicePatterns:1.0.0.+"
+    implementation "com.github.patrickianwilson:RabbitAgentJaxRs:1.0.0.+"
+    implementation group: "com.github.patrickianwilson", name:"CardinalConfigUtils", version: "1.0.0.+"
+    implementation group: 'io.swagger.core.v3', name: 'swagger-jaxrs2', version: '2.0.6'
+    implementation group: 'io.swagger.core.v3', name: 'swagger-jaxrs2-servlet-initializer', version: '2.0.6'
+    implementation "com.beust:jcommander:1.72"
 }
 
 publishing {
