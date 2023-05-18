@@ -30,7 +30,7 @@ if (System.getenv("BUILD_NUMBER") != null) {
 }
 
 ext {
-    moduleName = "ChangeMe!!" //change me!!
+    moduleName = "%%{{ModuleName}}%%" //change me!!
 }
 
 
