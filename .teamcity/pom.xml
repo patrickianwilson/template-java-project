@@ -1,14 +1,12 @@
 <?xml version="1.0"?>
 <project>
   <modelVersion>4.0.0</modelVersion>
-  <name>BuildTools_MercuryService Config DSL Script</name>
-
   <properties>
     <kotlin.version>1.6.10</kotlin.version>
   </properties>
-
-  <groupId>BuildTools_ModuleService</groupId>
-  <artifactId>BuildTools_MercuryService_dsl</artifactId>
+  <name>BuildTools_%%{{ModuleName}%%_%%{{ModuleName}%% Config DSL Script</name>
+  <groupId>BuildTools_%%{{ModuleName}%%_%%{{ModuleName}%%</groupId>
+  <artifactId>BuildTools_%%{{ModuleName}%%_%%{{ModuleName}%%_dsl</artifactId>
   <version>1.0-SNAPSHOT</version>
 
   <parent>
