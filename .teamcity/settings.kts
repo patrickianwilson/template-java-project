@@ -41,6 +41,7 @@ version = "2021.2"
 project {
 
     buildType(Build)
+    buildType(CreateInfra)
 //    buildType(IntTestDev)
     buildType(DeployDev)
     buildType(DeployProd)
@@ -74,6 +75,71 @@ object Build : BuildType({
         dockerSupport {
             loginToRegistry = on {
                 dockerRegistryId = "PROJECT_EXT_5"
+            }
+        }
+    }
+})
+
+object CreateInfra : BuildType({
+    name = "CreateEnvironments"
+
+    maxRunningBuilds = 1
+    type = BuildTypeSettings.Type.DEPLOYMENT
+    enablePersonalBuilds = false
+    artifactRules = "+:build/**/* => build_artifacts,+:src/main/deploy/Dockerfile => build_artifacts"
+    params {
+        param("PATH", "${'$'}CONTAINER_PATH:${'$'}PATH")
+    }
+    steps {
+
+        script {
+            name = "Cassius Infra Creation"
+            /* FIXME */
+            scriptContent = """
+                echo "Environment For Build Num: ${'$'}{BUILD_NUMBER}"
+                env
+                
+                echo "Current Directory Contents"
+                ls -al
+                                    
+                echo "Authenticate GCloud"
+                gcloud auth activate-service-account --key-file ${'$'}GOOGLE_APPLICATION_CREDENTIALS
+                                    
+                echo "GCloud Tool Config"
+                gcloud config list
+                
+                echo "Importing Image Into Cassius"
+                cassius environment patch --appId %%{{ModuleName}}%% --configFile ./cassius/Application.json
+            """.trimIndent()
+            dockerImage = "inquest.registry.jetbrains.space/p/buildtools/buildimages/buildimage:latest"
+            dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
+            dockerPull = true
+        }
+    }
+
+    triggers {
+        finishBuildTrigger {
+            buildType = "${Build.id}"
+            successfulOnly = true
+        }
+    }
+    features {
+        dockerSupport {
+            loginToRegistry = on {
+                dockerRegistryId = "PROJECT_EXT_5"
+            }
+        }
+    }
+
+    dependencies {
+        dependency(Build) {
+            snapshot {
+                onDependencyFailure = FailureAction.CANCEL
+                onDependencyCancel = FailureAction.CANCEL
+            }
+
+            artifacts {
+                artifactRules = "build_artifacts/**"
             }
         }
     }
@@ -147,7 +213,7 @@ object DeployDev : BuildType({
 
     triggers {
         finishBuildTrigger {
-            buildType = "${Build.id}"
+            buildType = "${CreateInfra.id}"
             successfulOnly = true
         }
     }
