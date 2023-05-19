@@ -50,32 +50,32 @@
   "ExposedSecrets": [
     {
       "EnvironmentName": "DEV",
-      "SecretName": "%%{{ModuleName.lowerCase}}-gcloud-credentials",
+      "SecretName": "%%{{ModuleName.lowerCase}}%%-gcloud-credentials",
       "FsPath": "opt/secrets/gcloud"
     },
     {
       "EnvironmentName": "PROD",
-      "SecretName": "%%{{ModuleName.lowerCase}}-gcloud-credentials",
+      "SecretName": "%%{{ModuleName.lowerCase}}%%-gcloud-credentials",
       "FsPath": "opt/secrets/gcloud"
     },
     {
       "EnvironmentName": "DEV",
-      "SecretName": "%%{{ModuleName.lowerCase}}-rabbit-admin-token",
+      "SecretName": "%%{{ModuleName.lowerCase}}%%-rabbit-admin-token",
       "envVarName": "RABBIT_ADMIN_TOKEN"
     },
     {
       "EnvironmentName": "PROD",
-      "SecretName": "%%{{ModuleName.lowerCase}}-rabbit-admin-token",
+      "SecretName": "%%{{ModuleName.lowerCase}}%%-rabbit-admin-token",
       "envVarName": "RABBIT_ADMIN_TOKEN"
     },
     {
       "EnvironmentName": "DEV",
-      "SecretName": "%%{{ModuleName.lowerCase}}-rabbit-service-account-secret",
+      "SecretName": "%%{{ModuleName.lowerCase}}%%-rabbit-service-account-secret",
       "envVarName": "SVC_ACCOUNT_SECRET"
     },
     {
       "EnvironmentName": "PROD",
-      "SecretName": "%%{{ModuleName.lowerCase}}-rabbit-service-account-secret",
+      "SecretName": "%%{{ModuleName.lowerCase}}%%-rabbit-service-account-secret",
       "envVarName": "SVC_ACCOUNT_SECRET"
     }
   ]
