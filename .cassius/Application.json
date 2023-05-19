@@ -33,7 +33,7 @@
       "name": "DEV",
       "realm": "corp",
       "cellIds": ["us-west2-b-1"],
-      "dnsName": "%%{{ModuleName.lowerCase}}-dev.inquestdevops.com",
+      "dnsName": "%%{{ModuleName.lowerCase}}%%-dev.inquestdevops.com",
       "config": {},
       "appConfig": {}
     },
@@ -41,7 +41,7 @@
       "name": "PROD",
       "realm": "prod",
       "cellIds": ["us-west2-b-1"],
-      "dnsName": "%%{{ModuleName.lowerCase}}-prod.inquestdevops.com",
+      "dnsName": "%%{{ModuleName.lowerCase}}%%-prod.inquestdevops.com",
       "config": {},
       "appConfig": {}
     }
