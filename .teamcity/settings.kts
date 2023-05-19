@@ -50,7 +50,7 @@ project {
 object Build : BuildType({
     name = "Build"
     maxRunningBuilds = 5
-    artifactRules = "+:build/**/* => build_artifacts,+:src/main/deploy/Dockerfile => build_artifacts"
+    artifactRules = "+:build/**/* => build_artifacts,+:src/main/deploy/Dockerfile => build_artifacts,+:.cassius/* => build_artifacts/cassius"
 
     vcs {
         root(DslContext.settingsRoot)
@@ -86,7 +86,6 @@ object CreateInfra : BuildType({
     maxRunningBuilds = 1
     type = BuildTypeSettings.Type.DEPLOYMENT
     enablePersonalBuilds = false
-    artifactRules = "+:build/**/* => build_artifacts,+:src/main/deploy/Dockerfile => build_artifacts"
     params {
         param("PATH", "${'$'}CONTAINER_PATH:${'$'}PATH")
     }
@@ -109,7 +108,7 @@ object CreateInfra : BuildType({
                 gcloud config list
                 
                 echo "Importing Image Into Cassius"
-                cassius environment patch --appId %%{{ModuleName}}%% --configFile ./cassius/Application.json
+                cassius environment patch --appId %%{{ModuleName}}%% --configFile cassius/Application.json
             """.trimIndent()
             dockerImage = "inquest.registry.jetbrains.space/p/buildtools/buildimages/buildimage:latest"
             dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
@@ -226,7 +225,7 @@ object DeployDev : BuildType({
     }
 
     dependencies {
-        dependency(Build) {
+        dependency(CreateInfra) {
             snapshot {
                 onDependencyFailure = FailureAction.CANCEL
                 onDependencyCancel = FailureAction.CANCEL
@@ -331,7 +330,7 @@ object DeployProd : BuildType({
 
     triggers {
         finishBuildTrigger {
-            buildType = "${Build.id}"
+            buildType = "${DeployDev.id}"
             successfulOnly = true
         }
     }
