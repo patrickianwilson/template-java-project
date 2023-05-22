@@ -83,17 +83,26 @@ cassius secret create --secretName %%{{ModuleName.lowerCase}}%%-prod-gcloud-cred
 
 ###create the service account.
 ```bash
-mercury client create --clientId %%{{ModuleName.lowerCase}}%%-dev-svc --grant client_credentials --path http://not-needed.com
-mercury client create --clientId %%{{ModuleName.lowerCase}}%%-dev-svc --grant client_credentials --path http://not-needed.com
+mercury client create --clientId %%{{ModuleName.lowerCase}}%%-dev-svc --grant authorization_code --path %%{{ModuleName.lowerCase}}%%-dev.inquestdevops.com/login
+mercury client create --clientId %%{{ModuleName.lowerCase}}%%-prod-svc --grant authorization_code --path %%{{ModuleName.lowerCase}}%%-prod.inquestdevops.com/login
 ```
 **Note:** Take note of the generated service account secret
 
 ```bash
 cassius secret create --secretName %%{{ModuleName.lowerCase}}%%-dev-service-account-secret --strContent <string from above>
 cassius secret create --secretName %%{{ModuleName.lowerCase}}%%-dev-service-account-secret --strContent <string from above>
-
 ```
 
+### Authorize this login redirect path in rabbit 
+
+```bash
+
+BASIC_AUTH="base 64 of rabbit admin username:password (rabbit admin password)"
+RABBIT_DNS='rabbit.customerdns.com'
+curl -X POST "http://rabbit-dev.inquestdevops.com/client" -H "accept: application/json" -H "Authorization: Basic $BASIC_AUTH" -H "Content-Type: application/json" -d "{\"clientId\":\"dev-cli\",\"allowedRedirectPaths\":[\"http://localhost:8080/login\", \"http://%%{{ModuleName.lowerCase}}%%-dev.inquestdevops.com/login\"]}"
+
+
+```
 ### grant permissions needed by your service:
 
 **Eg**: (the following is not actually needed to run a cardinal service)
