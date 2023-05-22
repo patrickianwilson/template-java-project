@@ -28,6 +28,7 @@
       "default": "cardinal-canary-dev"
     }
   },
+  "EnabledEnvironments": ["DEV"],
   "Environments": [
     {
       "name": "DEV",
@@ -35,7 +36,10 @@
       "cellIds": ["us-west2-b-1"],
       "dnsName": "%%{{ModuleName.lowerCase}}%%-dev.inquestdevops.com",
       "config": {},
-      "appConfig": {}
+      "appConfig": {
+        "RABBIT_AUTH_URL": "http://rabbit-dev.inquestdevops.com/auth/login",
+        "RABBIT_TOKEN_URL": "http://rabbit-dev.inquestdevops.com/token"
+      }
     },
     {
       "name": "PROD",
@@ -43,39 +47,42 @@
       "cellIds": ["us-west2-b-1"],
       "dnsName": "%%{{ModuleName.lowerCase}}%%-prod.inquestdevops.com",
       "config": {},
-      "appConfig": {}
+      "appConfig": {
+        "RABBIT_AUTH_URL": "http://rabbit.inquestdevops.com/auth/login",
+        "RABBIT_TOKEN_URL": "http://rabbit.inquestdevops.com/token"
+      }
     }
 
   ],
   "ExposedSecrets": [
     {
       "EnvironmentName": "DEV",
-      "SecretName": "%%{{ModuleName.lowerCase}}%%-gcloud-credentials",
+      "SecretName": "%%{{ModuleName.lowerCase}}%%-dev-gcloud-credentials",
       "FsPath": "opt/secrets/gcloud"
     },
     {
       "EnvironmentName": "PROD",
-      "SecretName": "%%{{ModuleName.lowerCase}}%%-gcloud-credentials",
+      "SecretName": "%%{{ModuleName.lowerCase}}%%-prod-gcloud-credentials",
       "FsPath": "opt/secrets/gcloud"
     },
     {
       "EnvironmentName": "DEV",
-      "SecretName": "%%{{ModuleName.lowerCase}}%%-rabbit-admin-token",
+      "SecretName": "%%{{ModuleName.lowerCase}}%%-dev-rabbit-admin-token",
       "envVarName": "RABBIT_ADMIN_TOKEN"
     },
     {
       "EnvironmentName": "PROD",
-      "SecretName": "%%{{ModuleName.lowerCase}}%%-rabbit-admin-token",
+      "SecretName": "%%{{ModuleName.lowerCase}}%%-prod-rabbit-admin-token",
       "envVarName": "RABBIT_ADMIN_TOKEN"
     },
     {
       "EnvironmentName": "DEV",
-      "SecretName": "%%{{ModuleName.lowerCase}}%%-rabbit-service-account-secret",
+      "SecretName": "%%{{ModuleName.lowerCase}}%%-dev-service-account-secret",
       "envVarName": "SVC_ACCOUNT_SECRET"
     },
     {
       "EnvironmentName": "PROD",
-      "SecretName": "%%{{ModuleName.lowerCase}}%%-rabbit-service-account-secret",
+      "SecretName": "%%{{ModuleName.lowerCase}}%%-prod-service-account-secret",
       "envVarName": "SVC_ACCOUNT_SECRET"
     }
   ]
