@@ -26,7 +26,8 @@ SERVICE_NAME=%%{{ModuleName.lowerCase}}%%
 ENV=dev
 PROJECT=inquest-$SERVICE_NAME-$ENV
 SERV_ACCNT_NAME="cassius-service-account"
-
+DEV_INGRESS_IP=127.0.0.1  #change me
+DNS_ZONE_NAME='inquest-devops'  #change me
 gcloud projects create $PROJECT
 
 gcloud beta iam service-accounts create $SERV_ACCNT_NAME \
@@ -40,10 +41,16 @@ gcloud projects add-iam-policy-binding $PROJECT \
 gcloud iam service-accounts keys create ~/dev-key.json \
   --iam-account $SERV_ACCNT_NAME@$PROJECT.iam.gserviceaccount.com \
   --project $PROJECT
-  
+
+ #add DNS
+gcloud dns --project=inlaid-citron-94802 record-sets create %%{{ModuleName.lowerCase}}%%-dev.inquestdevops.com.\
+  --zone="${DNS_ZONE_NAME}"\
+  --type="A" --ttl="300" --rrdatas="${DEV_INGRESS_IP}"
+
 ENV=prod
 PROJECT=inquest-$SERVICE_NAME-$ENV
-
+PROD_INGRESS_IP=127.0.0.1  #change me
+DNS_ZONE_NAME='inquest-devops'  #change me
 gcloud projects create $PROJECT
 
 gcloud beta iam service-accounts create $SERV_ACCNT_NAME \
@@ -57,7 +64,11 @@ gcloud projects add-iam-policy-binding $PROJECT \
 gcloud iam service-accounts keys create ~/prod-key.json \
   --iam-account $SERV_ACCNT_NAME@$PROJECT.iam.gserviceaccount.com \
   --project $PROJECT
-  
+ 
+ #add DNS
+gcloud dns --project=inlaid-citron-94802 record-sets create %%{{ModuleName.lowerCase}}%%-dev.inquestdevops.com.\
+  --zone="${DNS_ZONE_NAME}"\
+  --type="A" --ttl="300" --rrdatas="${PROD_INGRESS_IP}"
 ```
 
 Note the location of the key (for me it is ~/key.json)
