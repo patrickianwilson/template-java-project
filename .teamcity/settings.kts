@@ -41,6 +41,7 @@ version = "2021.2"
 project {
 
     buildType(Build)
+    buildType(CreateInfra)
 //    buildType(IntTestDev)
     buildType(DeployDev)
     buildType(DeployProd)
@@ -49,7 +50,7 @@ project {
 object Build : BuildType({
     name = "Build"
     maxRunningBuilds = 5
-    artifactRules = "+:build/**/* => build_artifacts,+:src/main/deploy/Dockerfile => build_artifacts"
+    artifactRules = "+:build/**/* => build_artifacts,+:src/main/deploy/Dockerfile => build_artifacts,+:.cassius/Application.json => build_artifacts"
 
     vcs {
         root(DslContext.settingsRoot)
@@ -79,46 +80,20 @@ object Build : BuildType({
     }
 })
 
-object DeployDev : BuildType({
-    name = "Deploy to DEV"
+object CreateInfra : BuildType({
+    name = "CreateEnvironments"
 
     maxRunningBuilds = 1
     type = BuildTypeSettings.Type.DEPLOYMENT
     enablePersonalBuilds = false
-    artifactRules = "+:build/**/* => build_artifacts,+:src/main/deploy/Dockerfile => build_artifacts"
+    artifactRules = "**/* => build_artifacts"
     params {
         param("PATH", "${'$'}CONTAINER_PATH:${'$'}PATH")
     }
     steps {
-        dockerCommand {
-            name = "Build Docker Image"
-            commandType = build {
-                source = file {
-                    path = "Dockerfile"
-                }
-                contextDir = "."
-                platform = DockerCommandStep.ImagePlatform.Linux
-                namesAndTags = """
-                    module-service:%build.number%
-                    inquest.registry.jetbrains.space/p/buildtools/services/mercury-service:1.0.0.%build.number%
-                    inquest.registry.jetbrains.space/p/buildtools/services/mercury-service:latest
-                """.trimIndent()
-                commandArgs = "--pull"
-            }
-        }
-        dockerCommand {
-            name = "Push Docker Image"
-            executionMode = BuildStep.ExecutionMode.RUN_ON_SUCCESS
-            commandType = push {
-                /* FIXME */
-                namesAndTags = """
-                   inquest.registry.jetbrains.space/p/buildtools/services/mercury-service:1.0.0.%build.number%
-                    inquest.registry.jetbrains.space/p/buildtools/services/mercury-service:latest
-                """.trimIndent()
-            }
-        }
+
         script {
-            name = "Cassius Import"
+            name = "Cassius Infra Creation"
             /* FIXME */
             scriptContent = """
                 echo "Environment For Build Num: ${'$'}{BUILD_NUMBER}"
@@ -134,10 +109,7 @@ object DeployDev : BuildType({
                 gcloud config list
                 
                 echo "Importing Image Into Cassius"
-                cassius deployment-bundle import --deploymentBundleName mercury-service-devel --version=1.0.0.${'$'}BUILD_NUMBER --image=inquest.registry.jetbrains.space/p/buildtools/services/mercury-service:1.0.0.${'$'}BUILD_NUMBER
-                
-                echo "Deploying Version to Dev Application Environment"
-                cassius environment deploy --deploymentBundleVersion=1.0.0.${'$'}BUILD_NUMBER --appId MercuryService --envName DEV
+                cassius environment patch --appId %%{{ModuleName}}%% --configFile Application.json
             """.trimIndent()
             dockerImage = "inquest.registry.jetbrains.space/p/buildtools/buildimages/buildimage:latest"
             dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
@@ -173,12 +145,106 @@ object DeployDev : BuildType({
     }
 })
 
+object DeployDev : BuildType({
+    name = "Deploy to DEV"
+
+    maxRunningBuilds = 1
+    type = BuildTypeSettings.Type.DEPLOYMENT
+    enablePersonalBuilds = false
+    artifactRules = "**/* => build_artifacts"
+    params {
+        param("PATH", "${'$'}CONTAINER_PATH:${'$'}PATH")
+    }
+    steps {
+        dockerCommand {
+            name = "Build Docker Image"
+            commandType = build {
+                source = file {
+                    path = "Dockerfile"
+                }
+                contextDir = "."
+                platform = DockerCommandStep.ImagePlatform.Linux
+                namesAndTags = """
+                    %%{{ModuleName.lowerCase}}%%:%build.number%
+                    inquest.registry.jetbrains.space/p/buildtools/services/%%{{ModuleName.lowerCase}}%%:1.0.0.%build.number%
+                    inquest.registry.jetbrains.space/p/buildtools/services/%%{{ModuleName.lowerCase}}%%:latest
+                """.trimIndent()
+                commandArgs = "--pull"
+            }
+        }
+        dockerCommand {
+            name = "Push Docker Image"
+            executionMode = BuildStep.ExecutionMode.RUN_ON_SUCCESS
+            commandType = push {
+                /* FIXME */
+                namesAndTags = """
+                   inquest.registry.jetbrains.space/p/buildtools/services/%%{{ModuleName.lowerCase}}%%:1.0.0.%build.number%
+                    inquest.registry.jetbrains.space/p/buildtools/services/%%{{ModuleName.lowerCase}}%%:latest
+                """.trimIndent()
+            }
+        }
+        script {
+            name = "Cassius Import"
+            /* FIXME */
+            scriptContent = """
+                echo "Environment For Build Num: ${'$'}{BUILD_NUMBER}"
+                env
+                
+                echo "Current Directory Contents"
+                ls -al
+                                    
+                echo "Authenticate GCloud"
+                gcloud auth activate-service-account --key-file ${'$'}GOOGLE_APPLICATION_CREDENTIALS
+                                    
+                echo "GCloud Tool Config"
+                gcloud config list
+                
+                echo "Importing Image Into Cassius"
+                cassius deployment-bundle import --deploymentBundleName %%{{ModuleName.lowerCase}}%%-devel --version=1.0.0.${'$'}BUILD_NUMBER --image=inquest.registry.jetbrains.space/p/buildtools/services/%%{{ModuleName.lowerCase}}%%:1.0.0.${'$'}BUILD_NUMBER
+                
+                echo "Deploying Version to Dev Application Environment"
+                cassius environment deploy --deploymentBundleVersion=1.0.0.${'$'}BUILD_NUMBER --appId %%{{ModuleName}}%% --envName DEV
+            """.trimIndent()
+            dockerImage = "inquest.registry.jetbrains.space/p/buildtools/buildimages/buildimage:latest"
+            dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
+            dockerPull = true
+        }
+    }
+
+    triggers {
+        finishBuildTrigger {
+            buildType = "${CreateInfra.id}"
+            successfulOnly = true
+        }
+    }
+    features {
+        dockerSupport {
+            loginToRegistry = on {
+                dockerRegistryId = "PROJECT_EXT_5"
+            }
+        }
+    }
+
+    dependencies {
+        dependency(CreateInfra) {
+            snapshot {
+                onDependencyFailure = FailureAction.CANCEL
+                onDependencyCancel = FailureAction.CANCEL
+            }
+
+            artifacts {
+                artifactRules = "build_artifacts/**"
+            }
+        }
+    }
+})
+
 //object IntTestVcsRoot: GitVcsRoot({
 //    /* FIXME */
 //
-//    id("SshGitGitJetbrainsSpaceInquestBuildtoolsModuleMercuryServiceIntegTestsGitRefsHeadsMaster")
-//    name = "ssh://git@git.jetbrains.space/inquest/buildtools/Module-MercuryServiceIntegTests.git#refs/heads/master"
-//    url = "ssh://git@git.jetbrains.space/inquest/buildtools/Module-MercuryServiceIntegTests.git"
+//    id("SshGitGitJetbrainsSpaceInquestBuildtoolsModule%%{{ModuleName}}%%IntegTestsGitRefsHeadsMaster")
+//    name = "ssh://git@git.jetbrains.space/inquest/buildtools/Module-%%{{ModuleName}}%%IntegTests.git#refs/heads/master"
+//    url = "ssh://git@git.jetbrains.space/inquest/buildtools/Module-%%{{ModuleName}}%%IntegTests.git"
 //    branch = "refs/heads/master"
 //    branchSpec = "refs/heads/*"
 //    authMethod = uploadedKey {
@@ -193,7 +259,7 @@ object DeployDev : BuildType({
 //    artifactRules = "+:build/**/* => build_artifacts,+:src/main/deploy/Dockerfile => build_artifacts"
 //    vcs {
 //        /* FIXME */
-//        root(RelativeId("SshGitGitJetbrainsSpaceInquestBuildtoolsModuleMercuryServiceIntegTestsGitRefsHeadsMaster"))
+//        root(RelativeId("SshGitGitJetbrainsSpaceInquestBuildtoolsModule%%{{ModuleName}}%%IntegTestsGitRefsHeadsMaster"))
 //    }
 //
 //    steps {
@@ -255,7 +321,7 @@ object DeployProd : BuildType({
                 gcloud config list
                 
                 echo "Deploying Version to Dev Application Environment"
-                cassius environment deploy --deploymentBundleVersion=1.0.0.${'$'}BUILD_NUMBER --appId MercuryService --envName Prod
+                cassius environment deploy --deploymentBundleVersion=1.0.0.${'$'}BUILD_NUMBER --appId %%{{ModuleName}}%% --envName Prod
             """.trimIndent()
             dockerImage = "inquest.registry.jetbrains.space/p/buildtools/buildimages/buildimage:latest"
             dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
@@ -265,7 +331,7 @@ object DeployProd : BuildType({
 
     triggers {
         finishBuildTrigger {
-            buildType = "${Build.id}"
+            buildType = "${DeployDev.id}"
             successfulOnly = true
         }
     }
