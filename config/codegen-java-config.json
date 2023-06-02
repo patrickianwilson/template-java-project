@@ -1,6 +1,6 @@
 {
-  "invokerPackage": "com.github.patrickianwilson.thirdparty.service",
-  "modelPackage":"com.github.patrickianwilson.thirdparty.service.model",
-  "apiPackage": "com.github.patrickianwilson.thirdparty.service.api",
+  "invokerPackage": "com.inquestdevops.%%{{ServiceModuleName}}%%.service",
+  "modelPackage":"com.inquestdevops.%%{{ServiceModuleName}}%%.service.model",
+  "apiPackage": "com.inquestdevops.%%{{ServiceModuleName}}%%.service.api",
   "dateLibrary": "java8"
 }
