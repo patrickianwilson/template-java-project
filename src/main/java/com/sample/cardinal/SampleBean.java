@@ -1,4 +1,4 @@
-package com.sample.java;
+package com.sample.cardinal;
 
 import lombok.Data;
 
