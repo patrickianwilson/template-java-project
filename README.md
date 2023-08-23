@@ -91,6 +91,9 @@ mercury client create --clientId %%{{ModuleName.lowerCase}}%%-prod-svc --grant a
 ```bash
 cassius secret create --secretName %%{{ModuleName.lowerCase}}%%-dev-service-account-secret --strContent <string from above>
 cassius secret create --secretName %%{{ModuleName.lowerCase}}%%-dev-service-account-secret --strContent <string from above>
+
+cassius secret create --secretName %%{{ModuleName.lowerCase}}%%-dev-rabbit-admin-token --strContent insecure   #dev admin tokens are not secure
+cassius secret create --secretName %%{{ModuleName.lowerCase}}%%-prod-rabbit-admin-token --strContent <secure password>
 ```
 
 ### Authorize this login redirect path in rabbit 
