@@ -25,7 +25,7 @@
     "templateId": "cardinal-app",
     "templateVersion": "1.0",
     "consumedDeployableBundles": {
-      "default": "cardinal-canary-dev"
+      "default": "%%{{ModuleName.lowerCase}}%%-dev"
     }
   },
   "EnabledEnvironments": ["DEV"],
@@ -45,7 +45,7 @@
       "name": "PROD",
       "realm": "prod",
       "cellIds": ["us-west2-b-1"],
-      "dnsName": "%%{{ModuleName.lowerCase}}%%-prod.inquestdevops.com",
+      "dnsName": "%%{{ModuleName.lowerCase}}%%.inquestdevops.com",
       "config": {},
       "appConfig": {
         "RABBIT_AUTH_URL": "http://rabbit.inquestdevops.com/auth/login",
