@@ -98,10 +98,10 @@ cassius secret create --secretName %%{{ModuleName.lowerCase}}%%-dev-service-acco
 ```bash
 USER='admin'
 TOKEN='admin_token'  #replace this
-
+CLIENT_ID='%%{{ModuleName.lowerCase}}%%-dev-svc'
 BASIC_AUTH=$(echo -n "$USER:$TOKEN" | base64)
 RABBIT_DNS='rabbit.customerdns.com' #Change this
-curl -X POST "http://$RABBIT_DNS/client" -H "accept: application/json" -H "Authorization: Basic $BASIC_AUTH" -H "Content-Type: application/json" -d "{\"clientId\":\"dev-cli\",\"allowedRedirectPaths\":[\"http://localhost:8080/login\", \"http://%%{{ModuleName.lowerCase}}%%-dev.inquestdevops.com/login\"]}"
+curl -X POST "http://$RABBIT_DNS/client" -H "accept: application/json" -H "Authorization: Basic $BASIC_AUTH" -H "Content-Type: application/json" -d "{\"clientId\":\"$CLIENT_ID\",\"allowedRedirectPaths\":[\"http://localhost:8080/login\", \"http://%%{{ModuleName.lowerCase}}%%-dev.inquestdevops.com/login\"]}"
 
 
 ```
@@ -114,8 +114,7 @@ cardsharp policy create --name "inquest-dev-rabbit-svc-list-perms-policy" \
 --description "A policy granting the rabbit service access to list permissions for an account" \
 --permission "CardSharp.ListPermissionsForAccount" \
 --resource "*" \
---account "inquest-dev-rabbit-svc"
-
+--account "$CLIENTID"
 ```
 
 
