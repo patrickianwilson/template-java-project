@@ -265,7 +265,7 @@ object DeployDev : BuildType({
 //
 //    steps {
 //        gradle {
-//            tasks = "intTest"
+//            tasks = "test"
 //            useGradleWrapper = false
 //        }
 //    }
