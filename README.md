@@ -107,5 +107,10 @@ cardsharp policy create --name "inquest-dev-rabbit-svc-list-perms-policy" \
 
 ```
 
+Finally, you probably want to register a user account for testing
 
+```
+mercury account register --display-name TestUser --email test@inquestdevops.com --fname Test --lname User --password insecure
+
+```
 
