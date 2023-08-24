@@ -43,6 +43,7 @@ project {
     buildType(Build)
     buildType(CreateInfra)
 //    buildType(IntTestDev)
+//    vcsRoot(IntTestVcsRoot)
     buildType(DeployDev)
     buildType(DeployProd)
 }
