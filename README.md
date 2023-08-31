@@ -83,8 +83,8 @@ cassius secret create --secretName %%{{ModuleName.lowerCase}}%%-prod-gcloud-cred
 
 ###create the service account.
 ```bash
-mercury client create --clientId %%{{ModuleName.lowerCase}}%%-dev-svc --grant authorization_code --path http://%%{{ModuleName.lowerCase}}%%-dev.inquestdevops.com/login
-mercury client create --clientId %%{{ModuleName.lowerCase}}%%-prod-svc --grant authorization_code --path http://%%{{ModuleName.lowerCase}}%%-prod.inquestdevops.com/login
+mercury client create --clientId %%{{ModuleName.lowerCase}}%%-dev-svc --grant client_credentials --path http://not-needed.com
+mercury client create --clientId %%{{ModuleName.lowerCase}}%%-dev-svc --grant client_credentials --path http://not-needed.com
 ```
 **Note:** Take note of the generated service account secret
 
@@ -94,6 +94,12 @@ cassius secret create --secretName %%{{ModuleName.lowerCase}}%%-dev-service-acco
 
 cassius secret create --secretName %%{{ModuleName.lowerCase}}%%-dev-rabbit-admin-token --strContent insecure   #dev admin tokens are not secure
 cassius secret create --secretName %%{{ModuleName.lowerCase}}%%-prod-rabbit-admin-token --strContent <secure password>
+```
+
+### Create a Deployment Bundle for Cassius to Track images
+
+```
+cassius deployment-bundle create --name sandstormapplauncher-dev --type image
 ```
 
 ### Authorize this login redirect path in rabbit 
