@@ -201,7 +201,7 @@ object DeployDev : BuildType({
                 gcloud config list
                 
                 echo "Importing Image Into Cassius"
-                cassius deployment-bundle import --deploymentBundleName %%{{ModuleName.lowerCase}}%%-devel --version=1.0.0.${'$'}BUILD_NUMBER --image=inquest.registry.jetbrains.space/p/buildtools/services/%%{{ModuleName.lowerCase}}%%:1.0.0.${'$'}BUILD_NUMBER
+                cassius deployment-bundle import --deploymentBundleName %%{{ModuleName.lowerCase}}%%-dev --version=1.0.0.${'$'}BUILD_NUMBER --image=inquest.registry.jetbrains.space/p/buildtools/services/%%{{ModuleName.lowerCase}}%%:1.0.0.${'$'}BUILD_NUMBER
                 
                 echo "Deploying Version to Dev Application Environment"
                 cassius environment deploy --deploymentBundleVersion=1.0.0.${'$'}BUILD_NUMBER --appId %%{{ModuleName}}%% --envName DEV
