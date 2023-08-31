@@ -94,6 +94,12 @@ cassius secret create --secretName %%{{ModuleName.lowerCase}}%%-dev-service-acco
 
 ```
 
+### Create a Deployment Bundle for Cassius to Track images
+
+```
+cassius deployment-bundle create --name sandstormapplauncher-dev --type image
+```
+
 ### grant permissions needed by your service:
 
 **Eg**: (the following is not actually needed to run a cardinal service)
