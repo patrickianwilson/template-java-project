@@ -4,7 +4,6 @@ import com.google.inject.Inject;
 import com.inquestdevops.cardinal.base.model.ExceptionModel;
 import com.sample.cardinal.controllers.UserController;
 import com.sample.cardinal.resource.model.User;
-import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -24,7 +23,6 @@ import java.net.URISyntaxException;
  */
 @Path("/application")
 @Provider
-@Api
 public class UserResource {
 
     private UserController appService;
