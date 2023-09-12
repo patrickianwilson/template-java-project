@@ -80,9 +80,10 @@ dependencies {
     implementation ("com.github.patrickianwilson:RabbitAgentJaxRs:1.0.0.+")
 
     implementation "com.github.patrickianwilson:RabbitLoginJAXRSResources:1.0.0.+"
-//    implementation project(":modules:RabbitLoginJAXRSResources")
 
-    implementation "com.github.patrickianwilson:MercuryServiceJavaAPI:1.0.0.+"
+    //uncomment if your application requires user registration
+//    implementation "com.github.patrickianwilson:MercuryServiceJavaAPI:1.0.0.+"
+
     implementation group: "com.github.patrickianwilson", name:"CardinalConfigUtils", version: "1.0.0.+"
     implementation group: "com.github.patrickianwilson", name:"CardinalServiceBase", version: "1.0.0.+"
     implementation group: "com.github.patrickianwilson", name:"CardinalUI", version: "1.0.0.+"

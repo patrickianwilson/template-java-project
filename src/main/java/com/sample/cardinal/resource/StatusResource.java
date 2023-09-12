@@ -1,7 +1,5 @@
 package com.sample.cardinal.resource;
 
-import io.swagger.annotations.Api;
-
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
@@ -12,7 +10,6 @@ import javax.ws.rs.ext.Provider;
  */
 @Path("/status")
 @Provider
-@Api
 public class StatusResource {
 
     @GET
