@@ -83,8 +83,8 @@ cassius secret create --secretName %%{{ModuleName.lowerCase}}%%-prod-gcloud-cred
 
 ###create the service account.
 ```bash
-mercury client create --clientId %%{{ModuleName.lowerCase}}%%-dev-svc --grant client_credentials --path http://not-needed.com
-mercury client create --clientId %%{{ModuleName.lowerCase}}%%-dev-svc --grant client_credentials --path http://not-needed.com
+mercury client create --clientId %%{{ModuleName.lowerCase}}%%-dev-svc --grant client_credentials --path http://rabbit-dev.inquestdevops.com/auth/merc/complete
+mercury client create --clientId %%{{ModuleName.lowerCase}}%%-dev-svc --grant client_credentials --path http://rabbit-dev.inquestdevops.com/auth/merc/complete
 ```
 **Note:** Take note of the generated service account secret
 
@@ -110,7 +110,7 @@ TOKEN='admin_token'  #replace this
 CLIENT_ID='%%{{ModuleName.lowerCase}}%%-dev-svc'
 BASIC_AUTH=$(echo -n "$USER:$TOKEN" | base64)
 RABBIT_DNS='rabbit.customerdns.com' #Change this
-curl -X POST "http://$RABBIT_DNS/client" -H "accept: application/json" -H "Authorization: Basic $BASIC_AUTH" -H "Content-Type: application/json" -d "{\"clientId\":\"$CLIENT_ID\",\"allowedRedirectPaths\":[\"http://localhost:8080/login\", \"http://%%{{ModuleName.lowerCase}}%%-dev.inquestdevops.com/login\"]}"
+curl -X POST "http://$RABBIT_DNS/client" -H "accept: application/json" -H "Authorization: Basic $BASIC_AUTH" -H "Content-Type: application/json" -d "{\"clientId\":\"$CLIENT_ID\",\"allowedRedirectPaths\":[\"http://localhost:8080/auth/complete\", \"http://%%{{ModuleName.lowerCase}}%%-dev.inquestdevops.com/auth/complete\"]}"
 
 
 ```
