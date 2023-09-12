@@ -14,6 +14,7 @@ import com.inquestdevops.rabbit.agent.filter.handlers.BasicInvalidAuthentication
 import com.inquestdevops.rabbit.agent.filter.handlers.BasicUnauthorizedExceptionHandler;
 import com.inquestdevops.rabbit.client.ApiClient;
 import com.inquestdevops.rabbit.client.api.DefaultApi;
+import com.inquestdevops.rabbit.jaxrs.login.AuthCompleteResource;
 import com.sample.cardinal.config.ApplicationConfig;
 import com.sample.cardinal.filters.CorsFilter;
 import com.sample.cardinal.resource.exceptions.EntityAlreadyExistsExceptionHandler;
