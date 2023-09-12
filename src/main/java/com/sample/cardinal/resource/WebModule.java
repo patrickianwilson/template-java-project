@@ -107,7 +107,10 @@ public class WebModule extends ServletModule {
         return new ThymeleafMessageBodyWriter(this.getClass());
     }
 
-
+    @Provides
+    public AuthCompleteResource getAuthCompleteResource(ApplicationConfig appConfig, DefaultApi rabbit, @Named("clientSecret") String clientSecret) {
+        return new AuthCompleteResource(rabbit, appConfig.clientId(), clientSecret);
+    }
 
 
 }

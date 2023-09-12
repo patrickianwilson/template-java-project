@@ -78,6 +78,8 @@ dependencies {
     implementation "com.github.patrickianwilson:AbstractDataRepositories-DatasourceGCPDatastore:1.0.0.+"
     implementation "com.github.patrickianwilson:ServicePatterns:1.0.0.+"
     implementation "com.github.patrickianwilson:RabbitAgentJaxRs:1.0.0.+"
+    implementation "com.github.patrickianwilson:RabbitLoginJAXRSResources:1.0.0.+"
+//    implementation project(":modules:RabbitLoginJAXRSResources")
     implementation group: "com.github.patrickianwilson", name:"CardinalConfigUtils", version: "1.0.0.+"
     implementation group: "com.github.patrickianwilson", name:"CardinalServiceBase", version: "1.0.0.+"
     implementation group: "com.github.patrickianwilson", name:"CardinalUI", version: "1.0.0.+"
@@ -115,6 +117,12 @@ publishing {
             }
         }
     }
+}
+
+//remove all these jax rs api dependencies
+project.configurations {
+    all*.exclude group: "javax.ws.rs", module: "javax.ws.rs-api"
+    all*.exclude group: "javax.ws.rs", module: "javax.ws.rs-api"
 }
 
 tasks.release.dependsOn "validate"
