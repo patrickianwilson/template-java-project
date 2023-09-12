@@ -50,4 +50,11 @@ public class ConfigModule implements Module {
     public ApplicationConfig getApplicationConfig(ConfigurationProvider provider) {
         return provider.bind("application", ApplicationConfig.class);
     }
+
+    @Provides
+    @Named("clientSecret")
+    public String getClientSecret() {
+        return Optional.ofNullable(System.getenv("SVC_ACCOUNT_SECRET"))
+                .orElseThrow(() -> new IllegalStateException("You must provide the client secret using the SVC_ACCOUNT_SECRET env var"));  //for local testing;
+    }
 }
