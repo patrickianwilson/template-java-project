@@ -296,7 +296,7 @@ object DeployDev : BuildType({
 
 object DeployProd : BuildType({
     name = "Deploy to Prod"
-
+    paused = true
     maxRunningBuilds = 1
     type = BuildTypeSettings.Type.DEPLOYMENT
     enablePersonalBuilds = false
