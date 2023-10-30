@@ -79,6 +79,19 @@ cassius secret create --secretName %%{{ModuleName.lowerCase}}%%-prod-gcloud-cred
 
 ```
 
+## Setup Datastore (if service needs a DB)
+
+Open the following url in a browser
+```
+echo https://console.cloud.google.com/datastore/setup?project=$PROJECT
+```
+
+The enable the datastore API
+
+```bash
+gcloud services enable datastore.googleapis.com --project $PROJECT
+```
+
 ## Setup Authentication and Authorization for new service
 
 ###create the service account.
