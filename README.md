@@ -75,7 +75,7 @@ gcloud iam service-accounts keys create ~/prod-key.json \
   --project $PROJECT
  
  #add DNS
-gcloud dns --project=inlaid-citron-94802 record-sets create %%{{ModuleName.lowerCase}}%%-dev.%%{{DnsZoneProdDomain}}%%.\
+gcloud dns --project=inlaid-citron-94802 record-sets create %%{{ModuleName.lowerCase}}%%.%%{{DnsZoneProdDomain}}%%.\
   --zone="${DNS_ZONE_NAME}"\
   --type="A" --ttl="300" --rrdatas="${PROD_INGRESS_IP}"
 ```
