@@ -41,8 +41,8 @@ public class ClientFactory {
     @Getter
     public enum Environments {
         LOCAL(\"http://localhost:8080\"),
-        DEV(\"http://%%{{ServiceModuleName.lowerCase}}%%-dev.inquestdevops.com\"),
-        PROD(\"http://%%{{ServiceModuleName.lowerCase}}%%.inquestdevops.com\");
+        DEV(\"http://%%{{ModuleName.lowerCase}}%%-dev.%%{{DnsZoneDevDomain}}%%\"),
+        PROD(\"http://%%{{ModuleName.lowerCase}}%%.%%{{DnsZoneProdDomain}}%%\");
 
         private String baseUrl;
         private int readTimeout = (int) TimeUnit.SECONDS.toMillis(20);
