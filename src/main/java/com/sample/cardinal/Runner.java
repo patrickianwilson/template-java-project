@@ -24,7 +24,7 @@ import java.util.EnumSet;
  */
 public class Runner {
     //fixme - update with the desired component name.
-    private static String componentName = "ChangeMe!";
+    private static String componentName = "%%{{ModuleName}}%%";
     public static void main(String... rawArgs ) throws Exception {
 
         Args args = new Args();
