@@ -15,8 +15,17 @@ gradlew release
 ```
 
 ## To Run
-
 Locally the server can be run by executing the ```com.sample.cardinal.Runner``` class using the `--port` flag (defaults to `8080`)
+
+The workdir needs to be set to the module 'BUILD' dir (${projectDir}/build) so it can pick up web assets correctly.
+Finally, you will need to set the `SVC_ACCOUNT_SECRET` environment for this Run configuration to be the service account secret
+for the dev service account.  This can be found by running:
+
+```bash
+
+mercury client update --clientId sandstormresourceservice-dev-svc
+
+```
 
 ## To Deploy
 This template requires a Google Service Account and project:
@@ -26,8 +35,8 @@ SERVICE_NAME=%%{{ModuleName.lowerCase}}%%
 ENV=dev
 PROJECT=inquest-$SERVICE_NAME-$ENV
 SERV_ACCNT_NAME="cassius-service-account"
-DEV_INGRESS_IP=127.0.0.1  #change me
-DNS_ZONE_NAME='inquest-devops'  #change me
+DEV_INGRESS_IP=127.0.0.1  # change me
+DNS_ZONE_NAME='inquest-devops'  # change me
 gcloud projects create $PROJECT
 
 gcloud beta iam service-accounts create $SERV_ACCNT_NAME \
@@ -43,14 +52,14 @@ gcloud iam service-accounts keys create ~/dev-key.json \
   --project $PROJECT
 
  #add DNS
-gcloud dns --project=inlaid-citron-94802 record-sets create %%{{ModuleName.lowerCase}}%%-dev.inquestdevops.com.\
+gcloud dns --project=inlaid-citron-94802 record-sets create %%{{ModuleName.lowerCase}}%%-dev.%%{{DnsZoneDevDomain}}%%.\
   --zone="${DNS_ZONE_NAME}"\
   --type="A" --ttl="300" --rrdatas="${DEV_INGRESS_IP}"
 
 ENV=prod
 PROJECT=inquest-$SERVICE_NAME-$ENV
 PROD_INGRESS_IP=127.0.0.1  #change me
-DNS_ZONE_NAME='inquest-devops'  #change me
+DNS_ZONE_NAME='inquest-devops'  #change me for PROD
 gcloud projects create $PROJECT
 
 gcloud beta iam service-accounts create $SERV_ACCNT_NAME \
@@ -66,7 +75,7 @@ gcloud iam service-accounts keys create ~/prod-key.json \
   --project $PROJECT
  
  #add DNS
-gcloud dns --project=inlaid-citron-94802 record-sets create %%{{ModuleName.lowerCase}}%%-dev.inquestdevops.com.\
+gcloud dns --project=inlaid-citron-94802 record-sets create %%{{ModuleName.lowerCase}}%%-dev.%%{{DnsZoneProdDomain}}%%.\
   --zone="${DNS_ZONE_NAME}"\
   --type="A" --ttl="300" --rrdatas="${PROD_INGRESS_IP}"
 ```
@@ -120,15 +129,15 @@ cassius deployment-bundle create --name sandstormapplauncher-dev --type image
 **Eg**: (the following is not actually needed to run a cardinal service)
 
 ```
-cardsharp policy create --name "inquest-dev-rabbit-svc-list-perms-policy" \
---description "A policy granting the rabbit service access to list permissions for an account" \
---permission "CardSharp.ListPermissionsForAccount" \
+cardsharp policy create --name "%%{{ModuleName.lowerCase}}%%-integ-testing-perms-policy" \
+--description "A policy granting the integ testing service account access to all APIs and resources for this service" \
+--permission "%%{{ModuleName}}%%.*" \
 --resource "*" \
---account "inquest-dev-rabbit-svc"
+--account "%%{{ModuleName.lowerCase}}%%-dev-svc"
 
 ```
 
-Finally, you probably want to register a user account for testing
+Finally, you may want to register a user account for testing (not required):
 
 ```
 mercury account register --display-name TestUser --email test@inquestdevops.com --fname Test --lname User --password insecure
