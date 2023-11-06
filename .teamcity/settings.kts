@@ -273,6 +273,10 @@ object DeployDev : BuildType({
 //    triggers {
 //        vcs {
 //        }
+//        finishBuildTrigger {
+//            buildType = "${DeployDev.id}"
+//            successfulOnly = true
+//        }
 //    }
 //
 //    features {
