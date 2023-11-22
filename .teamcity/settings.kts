@@ -267,6 +267,9 @@ object DeployDev : BuildType({
 //        gradle {
 //            tasks = "test"
 //            useGradleWrapper = false
+//            dockerImagePlatform = GradleBuildStep.ImagePlatform.Linux
+//            dockerPull = true
+//            dockerImage = "inquest.registry.jetbrains.space/p/buildtools/buildimages/buildimage:latest"
 //        }
 //    }
 //
@@ -281,6 +284,11 @@ object DeployDev : BuildType({
 //
 //    features {
 //        perfmon {
+//        }
+//        dockerSupport {
+//            loginToRegistry = on {
+//                dockerRegistryId = "PROJECT_EXT_5"
+//            }
 //        }
 //    }
 //
