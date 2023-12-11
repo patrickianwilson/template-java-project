@@ -41,7 +41,7 @@ public class ClientFactory {
     @Getter
     public enum Environments {
         LOCAL(\"http://localhost:8080\"),
-        DEV(\"http://%%{{ModuleName.lowerCase}}%%-dev.%%{{DnsZoneDevDomain}}%%\"),
+        DEV(\"http://%%{{ModuleName.lowerCase}}%%.%%{{DnsZoneDevDomain}}%%\"),
         PROD(\"http://%%{{ModuleName.lowerCase}}%%.%%{{DnsZoneProdDomain}}%%\");
 
         private String baseUrl;
