@@ -271,7 +271,17 @@ object DeployDev : BuildType({
 //            dockerPull = true
 //            dockerImage = "inquest.registry.jetbrains.space/p/buildtools/buildimages/buildimage:latest"
 //        }
+//      script {
+//            name = "Set Deployment Status Test"
+//            id = "Set_Deployment_Status_Test"
+//            scriptContent = """
+//              DEPLOYMENT_ATTEMPT=${'$'}(cat .cassius/last-deployment-attempt-id)
+//              echo "Setting Status for Deployment: ${'$'}{DEPLOYMENT_ATTEMPT}"
+//              cassius environment set-deployment-status --appId %%{{ModuleName}}%% --envName DEV --deploymentAttemptId ${'$'}{DEPLOYMENT_ATTEMPT} --succeeded
+//            """.trimIndent()
+//      }
 //    }
+
 //
 //    triggers {
 //        vcs {
